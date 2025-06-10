@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand } from "lucide-react";
+import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -65,6 +65,24 @@ export default function Home() {
     },
   ];
 
+  const howItWorksSteps = [
+    {
+      title: "তথ্য প্রদান করুন",
+      description: "মৃত্যুর বিবরণ, স্মরণিকার তথ্য বা আপনার অন্তিম পরিকল্পনা আমাদের জানান।",
+      icon: <ClipboardList className="h-12 w-12 text-primary mb-4" />
+    },
+    {
+      title: "এআই সহায়তা নিন",
+      description: "জানাজার সঠিক সময়, মর্মস্পর্শী স্মরণিকার খসড়া এবং অন্যান্য গুরুত্বপূর্ণ বিষয়ে বুদ্ধিমান পরামর্শ ও সহায়তা পান।",
+      icon: <Brain className="h-12 w-12 text-primary mb-4" />
+    },
+    {
+      title: "পরিষেবা খুঁজুন",
+      description: "আপনার প্রয়োজনীয় সেবাদাতা যেমন - ইমাম, অ্যাম্বুলেন্স, কাফনের কাপড় সরবরাহকারী ইত্যাদির সাথে সহজেই সংযুক্ত হোন।",
+      icon: <SearchCheck className="h-12 w-12 text-primary mb-4" />
+    }
+  ];
+
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
@@ -115,16 +133,40 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* How It Works Section */}
+      <section className="w-full py-12 md:py-24 lg:py-20 bg-secondary/30">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+            <Workflow className="h-12 w-12 text-accent mb-2" />
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">সহজেই শুরু করুন</h2>
+            <p className="max-w-[900px] text-muted-foreground md:text-lg">মাত্র কয়েকটি সহজ ধাপে আপনার প্রয়োজনীয় সেবা গ্রহণ করুন।</p>
+          </div>
+          <div className="mx-auto grid items-start gap-8 sm:max-w-5xl md:grid-cols-3 md:gap-12">
+            {howItWorksSteps.map((step) => (
+               <Card key={step.title} className="flex flex-col items-center text-center shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden p-6">
+                <CardHeader className="items-center p-0 mb-3">
+                  {step.icon}
+                  <CardTitle className="font-headline text-xl">{step.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <CardDescription className="text-muted-foreground">{step.description}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
       
       {/* Informational Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-secondary/50">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
           <div className="space-y-4">
             <h2 className="text-3xl font-headline font-bold tracking-tighter md:text-4xl/tight text-foreground">
-              যখন আপনার সবচেয়ে বেশি প্রয়োজন তখন সমর্থন এবং নির্দেশিকা
+              কঠিন সময়ে আমরা আছি আপনার পাশে
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              অন্তিম যাত্রায়, আমরা প্রিয়জনকে হারানোর সাথে আসা মানসিক এবং লজিস্টিক চ্যালেঞ্জগুলি বুঝি। আমাদের প্ল্যাটফর্মটি অন্ত্যেষ্টিক্রিয়া পরিকল্পনা প্রক্রিয়া সহজ করার জন্য ডিজাইন করা হয়েছে, আপনাকে নির্ভরযোগ্য তথ্য সরবরাহ করে এবং প্রয়োজনীয় পরিষেবাগুলির সাথে সংযুক্ত করে, সমস্তই অত্যন্ত যত্ন এবং সাংস্কৃতিক সংবেদনশীলতার সাথে।
+              অন্তিম যাত্রায় আমরা গভীরভাবে উপলব্ধি করি প্রিয়জনকে হারানোর মানসিক ও বাস্তব চ্যালেঞ্জগুলো। আমাদের প্ল্যাটফর্মটি তৈরি করা হয়েছে অন্ত্যেষ্টিক্রিয়ার জটিল প্রক্রিয়াকে সহজ করার জন্য। আমরা আপনাকে নির্ভরযোগ্য তথ্য, এআই-চালিত সহায়তা এবং প্রয়োজনীয় সেবাসমূহের সাথে সংযুক্ত করি, সর্বোচ্চ যত্ন ও সাংস্কৃতিক সংবেদনশীলতার সাথে।
             </p>
             <ul className="grid gap-2 py-4">
               <li>
@@ -134,6 +176,10 @@ export default function Home() {
               <li>
                 <HelpingHand className="mr-2 inline-block h-4 w-4 text-primary" />
                 যাচাইকৃত পরিষেবা প্রদানকারীদের অ্যাক্সেস।
+              </li>
+               <li>
+                <HelpingHand className="mr-2 inline-block h-4 w-4 text-primary" />
+                এআই-চালিত স্বয়ংক্রিয় পরামর্শ ও সহায়তা।
               </li>
               <li>
                 <HelpingHand className="mr-2 inline-block h-4 w-4 text-primary" />
