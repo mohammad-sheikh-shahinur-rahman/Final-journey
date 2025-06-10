@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Globe, UserCircle } from 'lucide-react'; // Briefcase was unused, so removed for now.
 
-const newGlobalImageUrl = "https://i.ibb.co/8ggZLNpJ/AIRetouch-20250610-115309345.jpg";
+const developerImageUrl = "https://m.media-amazon.com/images/S/amzn-author-media-prod/b02mvc2hucu96hchlksdjmogii._SY450_CR0%2C0%2C450%2C450_.jpg";
 
 export default function DeveloperInfoPage() {
   const developer = {
@@ -18,7 +18,7 @@ export default function DeveloperInfoPage() {
       'ডিজিটাল ফরেনসিক বিশেষজ্ঞ',
       'প্রযুক্তি উদ্ভাবক',
     ],
-    imageUrl: newGlobalImageUrl, // Using the new global image URL
+    imageUrl: developerImageUrl, 
     bio: 'মোহাম্মদ শেখ শাহিনুর রহমান একজন বহুমাত্রিক প্রতিভার অধিকারী ব্যক্তিত্ব। তিনি একাধারে একজন সৃজনশীল কবি ও লেখক, এবং অন্যদিকে একজন দূরদর্শী সফটওয়্যার ইঞ্জিনিয়ার, প্রোগ্রামার ও প্রযুক্তি উদ্ভাবক। ডিজিটাল সুরক্ষার ক্ষেত্রেও রয়েছে তার পদচারণা, যেখানে তিনি ডিজিটাল ফরেনসিক বিশেষজ্ঞ হিসেবে কাজ করেন। জ্ঞান, সৃজনশীলতা এবং প্রযুক্তির সমন্বয়ে তিনি মানবকল্যাণে অবদান রাখতে সদা সচেষ্ট।',
     websites: [
       { name: 'ব্যক্তিগত ওয়েবসাইট', url: 'https://mohammad-sheikh-shahinur-rahman.vercel.app/' },
@@ -36,7 +36,7 @@ export default function DeveloperInfoPage() {
               alt={developer.name}
               layout="fill"
               objectFit="cover"
-              data-ai-hint="profile image"
+              data-ai-hint="developer portrait"
             />
           </div>
           <CardTitle className="text-3xl font-headline text-primary">{developer.name}</CardTitle>
