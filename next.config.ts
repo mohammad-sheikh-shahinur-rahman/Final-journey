@@ -30,6 +30,19 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Don't attempt to bundle Node.js built-in modules for the client
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        async_hooks: false,
+        fs: false, // Often another one that can cause issues if pulled client-side
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
