@@ -33,28 +33,23 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Ensure config.resolve and config.resolve.fallback exist
-      if (!config.resolve) {
-        config.resolve = {};
-      }
-      if (!config.resolve.fallback) {
-        config.resolve.fallback = {};
-      }
-
-      // Don't attempt to bundle Node.js built-in modules for the client
-      config.resolve.fallback.async_hooks = false;
-      config.resolve.fallback.fs = false;
-      config.resolve.fallback.net = false;
-      config.resolve.fallback.tls = false;
-      config.resolve.fallback.child_process = false;
-      config.resolve.fallback.path = false;
-      config.resolve.fallback.os = false;
-      config.resolve.fallback.crypto = false; // Can sometimes be polyfilled by browsers, but explicit false is safer here.
-      config.resolve.fallback.stream = false;
-      config.resolve.fallback.http = false;
-      config.resolve.fallback.https = false;
-      config.resolve.fallback.zlib = false;
-      config.resolve.fallback.url = false; // Browsers have URL, but Node's `url` is different.
+      // More robust way to set fallbacks
+      config.resolve.fallback = {
+        ...(config.resolve.fallback || {}), // Preserve existing fallbacks
+        async_hooks: false,
+        fs: false,
+        net: false,
+        tls: false,
+        child_process: false,
+        path: false,
+        os: false,
+        crypto: false,
+        stream: false,
+        http: false,
+        https: false,
+        zlib: false,
+        url: false,
+      };
     }
     return config;
   },
