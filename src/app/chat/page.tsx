@@ -39,7 +39,7 @@ export default function ChatPage() {
       {
         id: 'welcome-msg',
         role: 'assistant',
-        content: 'আসসালামু আলাইকুম! আমি সেবক, আপনার সেবাপ্ল্যান এআই সহকারী। অন্ত্যেষ্টিক্রিয়া পরিকল্পনা বা আমাদের পরিষেবা সম্পর্কে আপনার কোনো প্রশ্ন থাকলে জিজ্ঞাসা করতে পারেন।'
+        content: 'আসসালামু আলাইকুম! আমি সেবক, আপনার অন্তিম যাত্রা এআই সহকারী। অন্ত্যেষ্টিক্রিয়া পরিকল্পনা বা আমাদের পরিষেবা সম্পর্কে আপনার কোনো প্রশ্ন থাকলে জিজ্ঞাসা করতে পারেন।'
       }
     ]);
     inputRef.current?.focus();
@@ -93,7 +93,7 @@ export default function ChatPage() {
           <Sparkles className="h-10 w-10 mx-auto text-primary mb-2" />
           <CardTitle className="text-2xl font-headline">এআই চ্যাট সহকারী - সেবক</CardTitle>
           <CardDescription>
-            আপনার প্রশ্ন জিজ্ঞাসা করুন অথবা সেবাপ্ল্যান সম্পর্কিত তথ্য জানুন।
+            আপনার প্রশ্ন জিজ্ঞাসা করুন অথবা অন্তিম যাত্রা সম্পর্কিত তথ্য জানুন।
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
