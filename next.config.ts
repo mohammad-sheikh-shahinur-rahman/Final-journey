@@ -34,10 +34,10 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { isServer, webpack }) => { // Added 'webpack' to destructured arguments
     if (!isServer) {
-      // Add IgnorePlugin for async_hooks to prevent it from being bundled on the client
+      // Add IgnorePlugin for async_hooks and node:async_hooks to prevent them from being bundled on the client
       config.plugins.push(
         new webpack.IgnorePlugin({
-          resourceRegExp: /^async_hooks$/,
+          resourceRegExp: /^(node:)?async_hooks$/,
         })
       );
 
@@ -47,8 +47,8 @@ const nextConfig: NextConfig = {
       config.resolve.fallback = config.resolve.fallback || {};
 
       // Set specific fallbacks to false (keeping these as defense-in-depth)
-      // The async_hooks fallback might be redundant due to IgnorePlugin, but it's harmless.
       config.resolve.fallback.async_hooks = false;
+      config.resolve.fallback['node:async_hooks'] = false; // Explicitly handle node: prefix
       config.resolve.fallback.fs = false;
       config.resolve.fallback.net = false;
       config.resolve.fallback.tls = false;
@@ -62,7 +62,7 @@ const nextConfig: NextConfig = {
       config.resolve.fallback.http2 = false;
       config.resolve.fallback.zlib = false;
       config.resolve.fallback.url = false;
-      config.resolve.fallback.dns = false; // Added dns
+      config.resolve.fallback.dns = false;
     }
     return config;
   },
