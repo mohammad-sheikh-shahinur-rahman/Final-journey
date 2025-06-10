@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare } from "lucide-react";
+import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,7 +18,7 @@ export default function Home() {
       title: "এআই জানাজার সময় প্রস্তাবনা",
       description: "ইসলামিক ঐতিহ্য এবং স্থানীয় সময়সূচীর উপর ভিত্তি করে জানাজার নামাজের সময়ের জন্য এআই-চালিত প্রস্তাবনা পান।",
       icon: <CalendarClock className="h-10 w-10 text-primary mb-4" />,
-      link: "/report-death", // Assuming this form also triggers Janaza time suggestion.
+      link: "/report-death", 
       cta: "প্রস্তাবনা পান"
     },
     {
@@ -27,6 +27,13 @@ export default function Home() {
       icon: <PenSquare className="h-10 w-10 text-primary mb-4" />,
       link: "/generate-obituary",
       cta: "স্মরণিকা তৈরি করুন"
+    },
+    {
+      title: "এআই চ্যাট সহকারী",
+      description: "অ্যাপের বৈশিষ্ট্য, অন্ত্যেষ্টিক্রিয়া পদ্ধতি বা সাধারণ সহায়তার জন্য আমাদের এআই সহকারীর সাথে কথা বলুন।",
+      icon: <MessageSquare className="h-10 w-10 text-primary mb-4" />,
+      link: "/chat",
+      cta: "চ্যাট শুরু করুন"
     },
     {
       title: "পরিষেবা প্রদানকারী খুঁজুন",
@@ -74,7 +81,7 @@ export default function Home() {
               অন্ত্যেষ্টিক্রিয়া ব্যবস্থার প্রতিটি ধাপে সহজে এবং মানসিক শান্তির সাথে আপনাকে সাহায্য করার জন্য আমরা বিভিন্ন পরিষেবা সরবরাহ করি।
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"> {/* Adjusted grid for potentially 5 items */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
             {services.map((service) => (
               <Card key={service.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
                 <CardHeader className="items-center text-center bg-card pt-6">

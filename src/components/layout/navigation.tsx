@@ -10,6 +10,7 @@ const navItems = [
   { href: '/report-death', label: 'মৃত্যুর প্রতিবেদন' },
   { href: '/services', label: 'সেবাসমূহ' },
   { href: '/generate-obituary', label: 'স্মরণিকা জেনারেটর' },
+  { href: '/chat', label: 'এআই চ্যাট' },
 ];
 
 export default function Navigation() {
