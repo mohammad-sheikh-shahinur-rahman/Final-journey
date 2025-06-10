@@ -13,6 +13,7 @@ const navItems = [
   { href: '/plan-ahead', label: 'আগাম পরিকল্পনা' },
   { href: '/invitations', label: 'আমন্ত্রণ সহায়তা' },
   { href: '/chat', label: 'এআই চ্যাট' },
+  { href: '/grief-support', label: 'শোক ও সান্ত্বনা' },
   { href: '/developer-info', label: 'ডেভেলপার পরিচিতি' },
 ];
 
@@ -36,3 +37,4 @@ export default function Navigation() {
     </nav>
   );
 }
+

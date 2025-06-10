@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare, MessageSquare, FileSignature, Send } from "lucide-react";
+import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,6 +50,13 @@ export default function Home() {
       cta: "প্রদানকারী খুঁজুন"
     },
     {
+      title: "শোক ও সান্ত্বনা",
+      description: "প্রিয়জন হারানোর কঠিন সময়ে মানসিক সমর্থন এবং শোক মোকাবিলার জন্য প্রয়োজনীয় তথ্য ও সহায়তা পান।",
+      icon: <LifeBuoy className="h-10 w-10 text-primary mb-4" />,
+      link: "/grief-support",
+      cta: "সমর্থন পান"
+    },
+    {
       title: "অতিরিক্ত সহায়তা পরিষেবা",
       description: "কাফন সেট, অ্যাম্বুলেন্স, দোয়েল টিম, দোয়া-মাহফিল এবং পারিবারিক আমন্ত্রণের মতো পরিষেবাগুলি অ্যাক্সেস করুন।",
       icon: <HeartHandshake className="h-10 w-10 text-primary mb-4" />,
@@ -63,7 +70,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-primary/10 via-background to-background">
         <div className="container px-4 md:px-6 text-center">
-          <Feather className="h-16 w-16 text-primary mx-auto mb-6" />
+          <HelpingHand className="h-16 w-16 text-primary mx-auto mb-6" />
           <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-foreground">
             সেবাপ্ল্যান: কঠিন সময়ে আপনার পথপ্রদর্শক
           </h1>
@@ -88,7 +95,7 @@ export default function Home() {
               অন্ত্যেষ্টিক্রিয়া ব্যবস্থার প্রতিটি ধাপে সহজে এবং মানসিক শান্তির সাথে আপনাকে সাহায্য করার জন্য আমরা বিভিন্ন পরিষেবা সরবরাহ করি।
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {services.map((service) => (
               <Card key={service.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
                 <CardHeader className="items-center text-center bg-card pt-6">
@@ -121,15 +128,15 @@ export default function Home() {
             </p>
             <ul className="grid gap-2 py-4">
               <li>
-                <Feather className="mr-2 inline-block h-4 w-4 text-primary" />
+                <HelpingHand className="mr-2 inline-block h-4 w-4 text-primary" />
                 পরিষ্কার, ধাপে ধাপে নির্দেশিকা।
               </li>
               <li>
-                <Feather className="mr-2 inline-block h-4 w-4 text-primary" />
+                <HelpingHand className="mr-2 inline-block h-4 w-4 text-primary" />
                 যাচাইকৃত পরিষেবা প্রদানকারীদের অ্যাক্সেস।
               </li>
               <li>
-                <Feather className="mr-2 inline-block h-4 w-4 text-primary" />
+                <HelpingHand className="mr-2 inline-block h-4 w-4 text-primary" />
                 সম্মানজনক এবং সাংস্কৃতিকভাবে উপযুক্ত সহায়তা।
               </li>
             </ul>
