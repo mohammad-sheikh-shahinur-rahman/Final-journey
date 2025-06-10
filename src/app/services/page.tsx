@@ -1,26 +1,28 @@
 
 'use client';
 
-import * as React from 'react'; // Added this line
+import * as React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Landmark, UsersRound, Package, Ambulance, BookOpenText, MailPlus, Phone, MessageSquare } from "lucide-react";
+import { Landmark, UsersRound, Package, Ambulance, BookOpenText, MailPlus, Phone, MessageSquare, UserCircle2 } from "lucide-react";
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import type { ImamEntry } from '@/app/register-imam/page'; // Import ImamEntry type
+
 
 const contactFormSchema = z.object({
   name: z.string().min(1, "নাম আবশ্যক"),
   contactInfo: z.string().min(1, "যোগাযোগের তথ্য (ফোন/ইমেল) আবশ্যক"),
   message: z.string().min(1, "বার্তা আবশ্যক"),
-  serviceType: z.string(), // Hidden field to track which service the form is for
+  serviceType: z.string(), 
 });
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
@@ -36,13 +38,12 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = (data) => {
-    // In a real app, you would send this data to a backend.
     console.log("Contact form submitted for " + serviceName + ":", data);
     toast({
       title: "অনুসন্ধান পাঠানো হয়েছে",
       description: `আপনার "${serviceName}" পরিষেবার জন্য অনুসন্ধান সফলভাবে জমা দেওয়া হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।`,
     });
-    reset(); // Reset form fields after submission
+    reset();
   };
 
   return (
@@ -72,10 +73,10 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
 }
 
 
-const mockImams = [
-  { id: 1, name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা, ঢাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ, শোকসভা পরিচালনা", image: "https://placehold.co/300x200.png", dataAiHint: "man portrait" },
-  { id: 2, name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা, ঢাকা", phone: "01800-000002", expertise: "দাফন প্রক্রিয়া তত্ত্বাবধান, কুরআন তিলাওয়াত, ধর্মীয় আলোচনা", image: "https://placehold.co/300x200.png", dataAiHint: "elderly man"  },
-  { id: 3, name: "ইমাম ফাতিমা খাতুন (মহিলা)", mosque: "মোহাম্মদপুর এলাকা (মহিলাদের জন্য বিশেষ সহায়তা), ঢাকা", phone: "01900-000003", expertise: "মহিলাদের মৃতদেহ প্রস্তুতি, পরিবারকে মানসিক সহায়তা, মহিলাদের জন্য দোয়া", image: "https://placehold.co/300x200.png", dataAiHint: "woman portrait"  },
+const mockImams: ImamEntry[] = [
+  { id: 'mock-1', name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা, ঢাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ, শোকসভা পরিচালনা", image: "https://placehold.co/300x200.png?text=Imam+1" },
+  { id: 'mock-2', name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা, ঢাকা", phone: "01800-000002", expertise: "দাফন প্রক্রিয়া তত্ত্বাবধান, কুরআন তিলাওয়াত, ধর্মীয় আলোচনা", image: "https://placehold.co/300x200.png?text=Imam+2"  },
+  { id: 'mock-3', name: "ইমাম ফাতিমা খাতুন (মহিলা)", mosque: "মোহাম্মদপুর এলাকা (মহিলাদের জন্য বিশেষ সহায়তা), ঢাকা", phone: "01900-000003", expertise: "মহিলাদের মৃতদেহ প্রস্তুতি, পরিবারকে মানসিক সহায়তা, মহিলাদের জন্য দোয়া", image: "https://placehold.co/300x200.png?text=Imam+3"  },
 ];
 
 const additionalServices = [
@@ -107,6 +108,28 @@ const additionalServices = [
 ];
 
 export default function ServicesPage() {
+  const [imamsToDisplay, setImamsToDisplay] = React.useState<ImamEntry[]>(mockImams);
+
+  React.useEffect(() => {
+    const storedImamsString = localStorage.getItem('registeredImams');
+    if (storedImamsString) {
+      try {
+        const loadedImams: ImamEntry[] = JSON.parse(storedImamsString);
+        if (loadedImams.length > 0) {
+          setImamsToDisplay(loadedImams.reverse()); // Show newest first
+        } else {
+          setImamsToDisplay(mockImams);
+        }
+      } catch (error) {
+        console.error("Failed to parse imams from local storage:", error);
+        setImamsToDisplay(mockImams); // Fallback to mock if parsing fails
+      }
+    } else {
+        setImamsToDisplay(mockImams);
+    }
+  }, []);
+
+
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
       <section className="mb-16">
@@ -114,21 +137,28 @@ export default function ServicesPage() {
           <Landmark className="h-16 w-16 mx-auto text-primary mb-4" />
           <h1 className="text-4xl font-headline font-bold text-foreground">ইমাম ও ধর্মীয় ব্যক্তিত্ব খুঁজুন</h1>
           <p className="text-muted-foreground mt-3 md:text-xl max-w-2xl mx-auto">
-            জানাজার নামাজ পরিচালনা, ধর্মীয় পরামর্শ এবং অন্যান্য ধর্মীয় আচার-অনুষ্ঠানের জন্য অভিজ্ঞ ইমাম ও ধর্মীয় ব্যক্তিত্বদের সাথে সংযোগ স্থাপন করুন।
+            জানাজার নামাজ পরিচালনা, ধর্মীয় পরামর্শ এবং অন্যান্য ধর্মীয় আচার-অনুষ্ঠানের জন্য অভিজ্ঞ ইমাম ও ধর্মীয় ব্যক্তিত্বদের সাথে সংযোগ স্থাপন করুন। (নিচের তালিকাটি আপনার লোকাল স্টোরেজে সেভ করা ইমামদের দেখাচ্ছে, যদি থাকে)
           </p>
         </div>
+        {imamsToDisplay.length === 0 ? (
+           <p className="text-center text-muted-foreground">এখনও কোনো ইমাম রেজিস্টার করা হয়নি। <a href="/register-imam" className="text-primary hover:underline">এখানে ক্লিক করে</a> নতুন ইমাম রেজিস্টার করুন।</p>
+        ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {mockImams.map(imam => (
+          {imamsToDisplay.map(imam => (
             <Card key={imam.id} className="flex flex-col shadow-xl hover:shadow-2xl transition-shadow duration-300 rounded-xl overflow-hidden bg-card">
-              <div className="relative w-full h-56">
-                <Image 
-                  src={imam.image} 
-                  alt={imam.name} 
-                  data-ai-hint={imam.dataAiHint} 
-                  layout="fill" 
-                  objectFit="cover" 
-                  className="rounded-t-xl"
-                />
+              <div className="relative w-full h-56 bg-muted flex items-center justify-center rounded-t-xl">
+                {imam.image ? (
+                  <Image 
+                    src={imam.image} // This will be a Data URI for registered imams
+                    alt={imam.name} 
+                    data-ai-hint={imam.id.startsWith('mock-') ? (imam.id === 'mock-3' ? 'woman portrait' : 'man portrait') : "imam profile"}
+                    layout="fill" 
+                    objectFit="cover" 
+                    className="rounded-t-xl"
+                  />
+                ) : (
+                  <UserCircle2 className="h-24 w-24 text-muted-foreground" />
+                )}
               </div>
               <CardHeader className="pt-6">
                 <CardTitle className="font-headline text-2xl text-primary">{imam.name}</CardTitle>
@@ -145,6 +175,7 @@ export default function ServicesPage() {
             </Card>
           ))}
         </div>
+        )}
       </section>
 
       <section id="additional-services" className="pt-12">
@@ -175,5 +206,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-    

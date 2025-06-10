@@ -9,6 +9,7 @@ const navItems = [
   { href: '/', label: 'হোম' },
   { href: '/report-death', label: 'মৃত্যুর প্রতিবেদন' },
   { href: '/services', label: 'সেবাসমূহ' },
+  { href: '/register-imam', label: 'ইমাম রেজিস্ট্রেশন'},
   { href: '/generate-obituary', label: 'স্মরণিকা জেনারেটর' },
   { href: '/plan-ahead', label: 'আগাম পরিকল্পনা' },
   { href: '/invitations', label: 'আমন্ত্রণ সহায়তা' },
@@ -37,4 +38,3 @@ export default function Navigation() {
     </nav>
   );
 }
-
