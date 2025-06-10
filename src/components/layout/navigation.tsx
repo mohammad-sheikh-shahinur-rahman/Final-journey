@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
+  SheetHeader, // Added import
+  SheetTitle,  // Added import
   SheetTrigger,
   SheetClose,
 } from '@/components/ui/sheet';
@@ -61,8 +63,8 @@ export default function Navigation() {
           </SheetTrigger>
           <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-background p-0">
             <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between border-b p-4">
-                <SheetClose asChild>
+              <SheetHeader className="flex-row items-center justify-between border-b p-4">
+                <SheetTitle asChild>
                   <Link
                     href="/"
                     className="flex items-center space-x-2"
@@ -73,9 +75,9 @@ export default function Navigation() {
                       অন্তিম যাত্রা
                     </span>
                   </Link>
-                </SheetClose>
+                </SheetTitle>
                 {/* The X close button is part of SheetContent by default */}
-              </div>
+              </SheetHeader>
               <nav className="flex-grow space-y-1 p-4">
                 {navItems.map((item) => (
                   <SheetClose asChild key={item.href}>
