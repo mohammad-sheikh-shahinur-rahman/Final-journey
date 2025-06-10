@@ -14,9 +14,9 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 
 const contactFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  contactInfo: z.string().min(1, "Contact info (phone/email) is required"),
-  message: z.string().min(1, "Message is required"),
+  name: z.string().min(1, "নাম আবশ্যক"),
+  contactInfo: z.string().min(1, "যোগাযোগের তথ্য (ফোন/ইমেল) আবশ্যক"),
+  message: z.string().min(1, "বার্তা আবশ্যক"),
   serviceType: z.string(),
 });
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -35,32 +35,32 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
   const onSubmit: SubmitHandler<ContactFormValues> = (data) => {
     console.log("Contact form submitted for " + serviceName + ":", data);
     toast({
-      title: "Request Sent",
-      description: `Your inquiry for ${serviceName} has been submitted. We will contact you shortly.`,
+      title: "অনুরোধ পাঠানো হয়েছে",
+      description: `আপনার ${serviceName} এর জন্য অনুসন্ধান জমা দেওয়া হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।`,
     });
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4 p-4 border rounded-md bg-card">
-      <h4 className="font-semibold text-lg">Contact for {serviceName}</h4>
+      <h4 className="font-semibold text-lg">{serviceName} এর জন্য যোগাযোগ করুন</h4>
       <div>
-        <Label htmlFor={`name-${serviceName}`}>Your Name</Label>
+        <Label htmlFor={`name-${serviceName}`}>আপনার নাম</Label>
         <Input id={`name-${serviceName}`} {...register('name')} />
         {errors.name && <p className="text-destructive text-sm mt-1">{errors.name.message}</p>}
       </div>
       <div>
-        <Label htmlFor={`contact-${serviceName}`}>Your Phone/Email</Label>
+        <Label htmlFor={`contact-${serviceName}`}>আপনার ফোন/ইমেল</Label>
         <Input id={`contact-${serviceName}`} {...register('contactInfo')} />
         {errors.contactInfo && <p className="text-destructive text-sm mt-1">{errors.contactInfo.message}</p>}
       </div>
       <div>
-        <Label htmlFor={`message-${serviceName}`}>Message/Requirements</Label>
+        <Label htmlFor={`message-${serviceName}`}>বার্তা/প্রয়োজনীয়তা</Label>
         <Textarea id={`message-${serviceName}`} {...register('message')} rows={3} />
         {errors.message && <p className="text-destructive text-sm mt-1">{errors.message.message}</p>}
       </div>
       <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-        <MessageSquare className="mr-2 h-4 w-4" /> Send Inquiry
+        <MessageSquare className="mr-2 h-4 w-4" /> অনুসন্ধান পাঠান
       </Button>
     </form>
   );
@@ -68,35 +68,35 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
 
 
 const mockImams = [
-  { id: 1, name: "Imam Abdullah Al-Mamun", mosque: "Baitul Mukarram National Mosque Area", phone: "01700-000001", expertise: "Janaza prayer, Islamic counseling", image: "https://placehold.co/100x100.png", dataAiHint: "man portrait" },
-  { id: 2, name: "Imam Hasan Mahmud", mosque: "Gulshan Central Mosque Area", phone: "01800-000002", expertise: "Funeral rites, Quran recitation", image: "https://placehold.co/100x100.png", dataAiHint: "elderly man"  },
-  { id: 3, name: "Imam Fatima Khatun", mosque: "Mohammadpur Area (Female Section Support)", phone: "01900-000003", expertise: "Female deceased preparations, family support", image: "https://placehold.co/100x100.png", dataAiHint: "woman portrait"  },
+  { id: 1, name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ", image: "https://placehold.co/100x100.png", dataAiHint: "man portrait" },
+  { id: 2, name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা", phone: "01800-000002", expertise: "অন্ত্যেষ্টিক্রিয়া, কুরআন তিলাওয়াত", image: "https://placehold.co/100x100.png", dataAiHint: "elderly man"  },
+  { id: 3, name: "ইমাম ফাতিমা খাতুন", mosque: "মোহাম্মদপুর এলাকা (মহিলা বিভাগ সমর্থন)", phone: "01900-000003", expertise: "মহিলা মৃতদেহ প্রস্তুতি, পরিবার সমর্থন", image: "https://placehold.co/100x100.png", dataAiHint: "woman portrait"  },
 ];
 
 const additionalServices = [
   { 
-    name: "Kafan Set (Burial Shroud)", 
-    description: "Complete sets of Kafan (burial shroud) for male and female, adhering to Islamic guidelines. Available in various sizes and materials.",
+    name: "কাফন সেট (দাফনের কাপড়)", 
+    description: "পুরুষ ও মহিলাদের জন্য কাফনের সম্পূর্ণ সেট, ইসলামিক নির্দেশিকা অনুসারে। বিভিন্ন আকার ও উপকরণে উপলব্ধ।",
     icon: <Package className="h-8 w-8 text-primary" />
   },
   { 
-    name: "Ambulance Service", 
-    description: "Reliable and timely ambulance services for transporting the deceased to the mosque, graveyard, or other locations. Equipped for respectful transport.",
+    name: "অ্যাম্বুলেন্স পরিষেবা", 
+    description: "মৃতদেহ মসজিদ, কবরস্থান বা অন্যান্য স্থানে পরিবহনের জন্য নির্ভরযোগ্য এবং সময়োপযোগী অ্যাম্বুলেন্স পরিষেবা। সম্মানজনক পরিবহনের জন্য সজ্জিত।",
     icon: <Ambulance className="h-8 w-8 text-primary" />
   },
   { 
-    name: "Doyel Team (Burial Assistance)", 
-    description: "Experienced Doyel teams to assist with the Dafan (burial) process, including grave digging and final rites at the cemetery.",
+    name: "দোয়েল টিম (দাফন সহায়তা)", 
+    description: "দাফন প্রক্রিয়ায় সহায়তার জন্য অভিজ্ঞ দোয়েল টিম, কবর খোঁড়া এবং কবরস্থানে চূড়ান্ত আচার-অনুষ্ঠান সহ।",
     icon: <UsersRound className="h-8 w-8 text-primary" />
   },
   { 
-    name: "Dowa-Mahfil (Prayer Gathering)", 
-    description: "Arrangements for Dowa-Mahfil (prayer gatherings for the deceased) including Imam services, venue suggestions, and necessary logistics.",
+    name: "দোয়া-মাহফিল (প্রার্থনা সমাবেশ)", 
+    description: "মৃতের জন্য দোয়া-মাহফিলের আয়োজন, ইমাম পরিষেবা, স্থানের প্রস্তাবনা এবং প্রয়োজনীয় সরঞ্জাম সহ।",
     icon: <BookOpenText className="h-8 w-8 text-primary" />
   },
   { 
-    name: "Family Invite System", 
-    description: "Assistance in informing relatives and friends about the Janaza and burial details through SMS, WhatsApp, or Email.",
+    name: "পারিবারিক আমন্ত্রণ ব্যবস্থা", 
+    description: "এসএমএস, হোয়াটসঅ্যাপ বা ইমেলের মাধ্যমে আত্মীয়স্বজন এবং বন্ধুদের জানাজা এবং দাফনের বিবরণ সম্পর্কে জানাতে সহায়তা।",
     icon: <MailPlus className="h-8 w-8 text-primary" />
   },
 ];
@@ -107,8 +107,8 @@ export default function ServicesPage() {
       <section className="mb-16">
         <div className="text-center mb-10">
           <Landmark className="h-12 w-12 mx-auto text-primary mb-3" />
-          <h1 className="text-4xl font-headline font-bold text-foreground">Find an Imam</h1>
-          <p className="text-muted-foreground mt-2 md:text-lg">Connect with experienced Imams for guidance and funeral prayer services.</p>
+          <h1 className="text-4xl font-headline font-bold text-foreground">ইমাম খুঁজুন</h1>
+          <p className="text-muted-foreground mt-2 md:text-lg">मार्गदर्शन এবং জানাজার নামাজের পরিষেবার জন্য অভিজ্ঞ ইমামদের সাথে সংযোগ করুন।</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {mockImams.map(imam => (
@@ -119,10 +119,10 @@ export default function ServicesPage() {
               <CardContent className="p-6 bg-card">
                 <CardTitle className="font-headline text-xl mb-1">{imam.name}</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground mb-1">{imam.mosque}</CardDescription>
-                <p className="text-sm text-foreground mb-3"><strong>Expertise:</strong> {imam.expertise}</p>
+                <p className="text-sm text-foreground mb-3"><strong>দক্ষতা:</strong> {imam.expertise}</p>
                 <a href={`tel:${imam.phone}`} className="w-full">
                   <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">
-                    <Phone className="mr-2 h-4 w-4" /> Call Now
+                    <Phone className="mr-2 h-4 w-4" /> এখনই কল করুন
                   </Button>
                 </a>
               </CardContent>
@@ -134,8 +134,8 @@ export default function ServicesPage() {
       <section id="additional-services">
         <div className="text-center mb-10 pt-10">
           <UsersRound className="h-12 w-12 mx-auto text-primary mb-3" />
-          <h1 className="text-4xl font-headline font-bold text-foreground">Additional Funeral Services</h1>
-          <p className="text-muted-foreground mt-2 md:text-lg">Access a range of support services to ease the funeral arrangement process.</p>
+          <h1 className="text-4xl font-headline font-bold text-foreground">অতিরিক্ত অন্ত্যেষ্টিক্রিয়া পরিষেবা</h1>
+          <p className="text-muted-foreground mt-2 md:text-lg">अंत्येष्टि ব্যবস্থা প্রক্রিয়া সহজ করতে বিভিন্ন সমর্থন পরিষেবা অ্যাক্সেস করুন।</p>
         </div>
         <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
           {additionalServices.map(service => (

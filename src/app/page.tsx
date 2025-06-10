@@ -7,32 +7,32 @@ import Link from "next/link";
 export default function Home() {
   const services = [
     {
-      title: "Report a Death",
-      description: "Submit essential details quickly and easily to initiate the necessary arrangements.",
+      title: "মৃত্যুর প্রতিবেদন করুন",
+      description: "প্রয়োজনীয় ব্যবস্থা শুরু করতে দ্রুত এবং সহজে অপরিহার্য বিবরণ জমা দিন।",
       icon: <FileText className="h-10 w-10 text-primary mb-4" />,
       link: "/report-death",
-      cta: "Submit Report"
+      cta: "প্রতিবেদন জমা দিন"
     },
     {
-      title: "AI Janaza Time Suggestion",
-      description: "Get AI-powered suggestions for Janaza prayer times based on Islamic traditions and local schedules.",
+      title: "এআই জানাজার সময় প্রস্তাবনা",
+      description: "ইসলামিক ঐতিহ্য এবং স্থানীয় সময়সূচীর উপর ভিত্তি করে জানাজার নামাজের সময়ের জন্য এআই-চালিত প্রস্তাবনা পান।",
       icon: <CalendarClock className="h-10 w-10 text-primary mb-4" />,
-      link: "/report-death", // Or a dedicated page if preferred
-      cta: "Get Suggestions"
+      link: "/report-death",
+      cta: "প্রস্তাবনা পান"
     },
     {
-      title: "Find Service Providers",
-      description: "Connect with local Imams and other essential service providers for funeral rites.",
+      title: "পরিষেবা প্রদানকারী খুঁজুন",
+      description: "জানাজার অনুষ্ঠানের জন্য স্থানীয় ইমাম এবং অন্যান্য অপরিহার্য পরিষেবা প্রদানকারীদের সাথে সংযোগ স্থাপন করুন।",
       icon: <Users className="h-10 w-10 text-primary mb-4" />,
       link: "/services",
-      cta: "Find Providers"
+      cta: "প্রদানকারী খুঁজুন"
     },
     {
-      title: "Additional Support Services",
-      description: "Access services like Kafan Sets, ambulance, Doyel teams, Dowa-Mahfil, and family invites.",
+      title: "অতিরিক্ত সহায়তা পরিষেবা",
+      description: "কাফন সেট, অ্যাম্বুলেন্স, দোয়েল টিম, দোয়া-মাহফিল এবং পারিবারিক আমন্ত্রণের মতো পরিষেবাগুলি অ্যাক্সেস করুন।",
       icon: <HeartHandshake className="h-10 w-10 text-primary mb-4" />,
       link: "/services#additional-services",
-      cta: "Explore Services"
+      cta: "পরিষেবাগুলি দেখুন"
     },
   ];
 
@@ -43,14 +43,14 @@ export default function Home() {
         <div className="container px-4 md:px-6 text-center">
           <Feather className="h-16 w-16 text-primary mx-auto mb-6" />
           <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl text-foreground">
-            ShebaPlan: Guiding You Through Difficult Times
+            সেবাপ্ল্যান: কঠিন সময়ে আপনার পথপ্রদর্শক
           </h1>
           <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-6 mb-8">
-            Compassionate and comprehensive funeral planning services in Bangladesh. We are here to support you with dignity and respect.
+            বাংলাদেশে সহানুভূতিশীল এবং ব্যাপক অন্ত্যেষ্টিক্রিয়া পরিকল্পনা পরিষেবা। আমরা মর্যাদা ও সম্মানের সাথে আপনাকে সহায়তা করতে এখানে আছি।
           </p>
           <Link href="/report-death">
             <Button size="lg" className="font-semibold bg-primary hover:bg-primary/90 text-primary-foreground">
-              Get Started
+              শুরু করুন
             </Button>
           </Link>
         </div>
@@ -61,9 +61,9 @@ export default function Home() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
             <Sparkles className="h-12 w-12 text-accent mb-2" />
-            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">Our Services</h2>
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">আমাদের সেবাসমূহ</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-lg lg:text-base xl:text-lg">
-              We offer a range of services to help you navigate funeral arrangements with ease and peace of mind.
+              अंत्येष्टि ব্যবস্থার মধ্যে সহজে এবং মানসিক শান্তির সাথে আপনাকে সাহায্য করার জন্য আমরা বিভিন্ন পরিষেবা সরবরাহ করি।
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -92,29 +92,29 @@ export default function Home() {
         <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
           <div className="space-y-4">
             <h2 className="text-3xl font-headline font-bold tracking-tighter md:text-4xl/tight text-foreground">
-              Support and Guidance When You Need It Most
+              যখন আপনার সবচেয়ে বেশি প্রয়োজন তখন সমর্থন এবং নির্দেশিকা
             </h2>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              At ShebaPlan, we understand the emotional and logistical challenges that come with losing a loved one. Our platform is designed to simplify the funeral planning process, providing you with reliable information and connecting you to necessary services, all with utmost care and cultural sensitivity.
+              সেবাপ্ল্যানে, আমরা প্রিয়জনকে হারানোর সাথে আসা মানসিক এবং লজিস্টিক চ্যালেঞ্জগুলি বুঝি। আমাদের প্ল্যাটফর্মটি অন্ত্যেষ্টিক্রিয়া পরিকল্পনা প্রক্রিয়া সহজ করার জন্য ডিজাইন করা হয়েছে, আপনাকে নির্ভরযোগ্য তথ্য সরবরাহ করে এবং প্রয়োজনীয় পরিষেবাগুলির সাথে সংযুক্ত করে, সমস্তই অত্যন্ত যত্ন এবং সাংস্কৃতিক সংবেদনশীলতার সাথে।
             </p>
             <ul className="grid gap-2 py-4">
               <li>
                 <Feather className="mr-2 inline-block h-4 w-4 text-primary" />
-                Clear, step-by-step guidance.
+                পরিষ্কার, ধাপে ধাপে নির্দেশিকা।
               </li>
               <li>
                 <Feather className="mr-2 inline-block h-4 w-4 text-primary" />
-                Access to verified service providers.
+                যাচাইকৃত পরিষেবা প্রদানকারীদের অ্যাক্সেস।
               </li>
               <li>
                 <Feather className="mr-2 inline-block h-4 w-4 text-primary" />
-                Respectful and culturally appropriate assistance.
+                সম্মানজনক এবং সাংস্কৃতিকভাবে উপযুক্ত সহায়তা।
               </li>
             </ul>
           </div>
           <Image
             src="https://placehold.co/600x400.png"
-            alt="Peaceful Scene"
+            alt="শান্তিপূর্ণ দৃশ্য"
             data-ai-hint="serene landscape"
             width={600}
             height={400}

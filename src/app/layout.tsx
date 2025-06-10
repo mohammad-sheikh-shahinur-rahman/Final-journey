@@ -6,22 +6,22 @@ import { Toaster } from "@/components/ui/toaster";
 import MainLayout from '@/components/layout/main-layout';
 
 const alegreya = Alegreya({
-  subsets: ['latin'],
+  subsets: ['latin', 'bengali'],
   variable: '--font-alegreya',
   display: 'swap',
 });
 
 const ptSans = PT_Sans({
-  subsets: ['latin'],
+  subsets: ['latin', 'bengali'],
   weight: ['400', '700'],
   variable: '--font-pt-sans',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'ShebaPlan - Funeral Planning and Management',
-  description: 'ShebaPlan offers comprehensive funeral planning and management services for Bangladeshi users. We provide support for death report submission, Janaza time suggestions, service provider connections, and more.',
-  keywords: ['funeral plan', 'Bangladesh', 'Janaza', 'ShebaPlan', 'mourning', 'remembrance'],
+  title: 'সেবাপ্ল্যান - জানাজা ও দাফন পরিকল্পনা এবং ব্যবস্থাপনা',
+  description: 'সেবাপ্ল্যান বাংলাদেশী ব্যবহারকারীদের জন্য ব্যাপক অন্ত্যেষ্টিক্রিয়া পরিকল্পনা এবং ব্যবস্থাপনা পরিষেবা সরবরাহ করে। আমরা মৃত্যুর প্রতিবেদন জমা, জানাজার সময় প্রস্তাবনা, পরিষেবা প্রদানকারীদের সাথে সংযোগ এবং আরও অনেক কিছুর জন্য সহায়তা প্রদান করি।',
+  keywords: ['ফিউনারেল প্ল্যান', 'বাংলাদেশ', 'জানাজা', 'সেবাপ্ল্যান', 'শোক', 'স্মরণ'],
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="bn" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

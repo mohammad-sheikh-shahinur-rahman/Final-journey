@@ -15,18 +15,19 @@ import { useToast } from "@/hooks/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
+import { bn } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 
 const deathReportSchema = z.object({
-  deceasedName: z.string().min(1, 'Deceased name is required'),
-  address: z.string().min(1, 'Address is required'),
-  timeOfDeathDate: z.date({ required_error: "Date of death is required." }),
-  timeOfDeathTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid time format (HH:MM)"),
-  contactPersonName: z.string().min(1, 'Contact person name is required'),
-  contactPersonPhone: z.string().min(1, 'Contact person phone is required'),
-  contactPersonEmail: z.string().email('Invalid email address').optional().or(z.literal('')),
-  localMasjidSchedule: z.string().min(1, 'Local Masjid schedule is required'),
-  location: z.string().min(1, 'General location is required'),
+  deceasedName: z.string().min(1, 'মৃত ব্যক্তির নাম আবশ্যক'),
+  address: z.string().min(1, 'ঠিকানা আবশ্যক'),
+  timeOfDeathDate: z.date({ required_error: "মৃত্যুর তারিখ আবশ্যক।" }),
+  timeOfDeathTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "অবৈধ সময় বিন্যাস (HH:MM)"),
+  contactPersonName: z.string().min(1, 'যোগাযোগকারী ব্যক্তির নাম আবশ্যক'),
+  contactPersonPhone: z.string().min(1, 'যোগাযোগকারী ব্যক্তির ফোন আবশ্যক'),
+  contactPersonEmail: z.string().email('অবৈধ ইমেল ঠিকানা').optional().or(z.literal('')),
+  localMasjidSchedule: z.string().min(1, 'স্থানীয় মসজিদের সময়সূচী আবশ্যক'),
+  location: z.string().min(1, 'সাধারণ অবস্থান আবশ্যক'),
 });
 
 type DeathReportFormValues = z.infer<typeof deathReportSchema>;
@@ -66,16 +67,16 @@ export default function ReportDeathPage() {
       const result = await suggestJanazaTime(aiInput);
       setJanazaSuggestions(result);
       toast({
-        title: "Suggestions Ready",
-        description: "Janaza time suggestions have been generated.",
+        title: "প্রস্তাবনা প্রস্তুত",
+        description: "জানাজার সময়ের প্রস্তাবনা তৈরি করা হয়েছে।",
       });
     } catch (e) {
       console.error(e);
       const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred.';
-      setError(`Failed to get Janaza time suggestions: ${errorMessage}`);
+      setError(`জানাজার সময়ের প্রস্তাবনা পেতে ব্যর্থ: ${errorMessage}`);
       toast({
-        title: "Error",
-        description: `Failed to get suggestions: ${errorMessage}`,
+        title: "ত্রুটি",
+        description: `প্রস্তাবনা পেতে ব্যর্থ: ${errorMessage}`,
         variant: "destructive",
       });
     } finally {
@@ -88,28 +89,28 @@ export default function ReportDeathPage() {
       <Card className="max-w-2xl mx-auto shadow-xl">
         <CardHeader className="text-center">
           <FileText className="h-12 w-12 mx-auto text-primary mb-2" />
-          <CardTitle className="text-3xl font-headline">Report a Death</CardTitle>
+          <CardTitle className="text-3xl font-headline">মৃত্যুর প্রতিবেদন করুন</CardTitle>
           <CardDescription>
-            Please provide the necessary details to proceed with funeral arrangements and receive Janaza time suggestions.
+            অনুগ্রহ করে অন্ত্যেষ্টিক্রিয়ার ব্যবস্থাগুলির সাথে এগিয়ে যেতে এবং জানাজার সময়ের প্রস্তাবনা পেতে প্রয়োজনীয় বিবরণ সরবরাহ করুন।
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <Label htmlFor="deceasedName">Deceased's Full Name</Label>
+              <Label htmlFor="deceasedName">মৃত ব্যক্তির পুরো নাম</Label>
               <Input id="deceasedName" {...register('deceasedName')} />
               {errors.deceasedName && <p className="text-destructive text-sm mt-1">{errors.deceasedName.message}</p>}
             </div>
 
             <div>
-              <Label htmlFor="address">Address of Deceased</Label>
+              <Label htmlFor="address">মৃত ব্যক্তির ঠিকানা</Label>
               <Input id="address" {...register('address')} />
               {errors.address && <p className="text-destructive text-sm mt-1">{errors.address.message}</p>}
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="timeOfDeathDate">Date of Death</Label>
+                <Label htmlFor="timeOfDeathDate">মৃত্যুর তারিখ</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
@@ -120,7 +121,7 @@ export default function ReportDeathPage() {
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+                      {selectedDate ? format(selectedDate, "PPP", { locale: bn }) : <span>একটি তারিখ নির্বাচন করুন</span>}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
@@ -129,13 +130,14 @@ export default function ReportDeathPage() {
                       selected={selectedDate}
                       onSelect={(date) => setValue('timeOfDeathDate', date || new Date())}
                       initialFocus
+                      locale={bn}
                     />
                   </PopoverContent>
                 </Popover>
                 {errors.timeOfDeathDate && <p className="text-destructive text-sm mt-1">{errors.timeOfDeathDate.message}</p>}
               </div>
               <div>
-                <Label htmlFor="timeOfDeathTime">Time of Death (24h format, e.g., 14:30)</Label>
+                <Label htmlFor="timeOfDeathTime">মৃত্যুর সময় (২৪-ঘণ্টা ফরম্যাট, যেমন, ১৪:৩০)</Label>
                 <div className="relative">
                   <ClockIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input id="timeOfDeathTime" type="time" {...register('timeOfDeathTime')} className="pl-10"/>
@@ -146,36 +148,36 @@ export default function ReportDeathPage() {
 
 
             <div>
-              <Label htmlFor="contactPersonName">Contact Person's Name</Label>
+              <Label htmlFor="contactPersonName">যোগাযোগকারী ব্যক্তির নাম</Label>
               <Input id="contactPersonName" {...register('contactPersonName')} />
               {errors.contactPersonName && <p className="text-destructive text-sm mt-1">{errors.contactPersonName.message}</p>}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="contactPersonPhone">Contact Person's Phone</Label>
+                <Label htmlFor="contactPersonPhone">যোগাযোগকারী ব্যক্তির ফোন</Label>
                 <Input id="contactPersonPhone" type="tel" {...register('contactPersonPhone')} />
                 {errors.contactPersonPhone && <p className="text-destructive text-sm mt-1">{errors.contactPersonPhone.message}</p>}
               </div>
               <div>
-                <Label htmlFor="contactPersonEmail">Contact Person's Email (Optional)</Label>
+                <Label htmlFor="contactPersonEmail">যোগাযোগকারী ব্যক্তির ইমেল (ঐচ্ছিক)</Label>
                 <Input id="contactPersonEmail" type="email" {...register('contactPersonEmail')} />
                 {errors.contactPersonEmail && <p className="text-destructive text-sm mt-1">{errors.contactPersonEmail.message}</p>}
               </div>
             </div>
 
             <div>
-              <Label htmlFor="location">General Location (e.g., City, Area)</Label>
+              <Label htmlFor="location">সাধারণ অবস্থান (যেমন, শহর, এলাকা)</Label>
               <Input id="location" {...register('location')} />
               {errors.location && <p className="text-destructive text-sm mt-1">{errors.location.message}</p>}
             </div>
             
             <div>
-              <Label htmlFor="localMasjidSchedule">Local Masjid Prayer Schedule</Label>
+              <Label htmlFor="localMasjidSchedule">স্থানীয় মসজিদের নামাজের সময়সূচী</Label>
               <Textarea
                 id="localMasjidSchedule"
                 {...register('localMasjidSchedule')}
-                placeholder="e.g., Fajr: 5:30 AM, Dhuhr: 1:30 PM, Asr: 5:00 PM, Maghrib: Sunset, Isha: 8:30 PM"
+                placeholder="যেমন, ফজর: ভোর ৫:৩০, যোহর: দুপুর ১:৩০, আসর: বিকাল ৫:০০, মাগরিব: সূর্যাস্ত, ইশা: রাত ৮:৩০"
                 rows={4}
               />
               {errors.localMasjidSchedule && <p className="text-destructive text-sm mt-1">{errors.localMasjidSchedule.message}</p>}
@@ -183,7 +185,7 @@ export default function ReportDeathPage() {
 
             <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Brain className="mr-2 h-4 w-4" />}
-              Submit and Get Janaza Time Suggestions
+              জমা দিন এবং জানাজার সময়ের প্রস্তাবনা পান
             </Button>
           </form>
 
@@ -191,7 +193,7 @@ export default function ReportDeathPage() {
             <div className="mt-6 p-4 bg-destructive/10 border border-destructive/30 rounded-md text-destructive">
               <div className="flex items-center">
                 <AlertTriangle className="h-5 w-5 mr-2" />
-                <p className="font-medium">Error</p>
+                <p className="font-medium">ত্রুটি</p>
               </div>
               <p className="text-sm">{error}</p>
             </div>
@@ -201,22 +203,22 @@ export default function ReportDeathPage() {
             <Card className="mt-8 shadow-md border-accent">
               <CardHeader>
                 <CardTitle className="text-2xl font-headline text-accent flex items-center">
-                  <CalendarIcon className="mr-2 h-6 w-6" /> AI Suggested Janaza Times
+                  <CalendarIcon className="mr-2 h-6 w-6" /> এআই প্রস্তাবিত জানাজার সময়
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-lg mb-2">Suggested Times:</h4>
+                  <h4 className="font-semibold text-lg mb-2">প্রস্তাবিত সময়:</h4>
                   <ul className="list-disc list-inside space-y-1">
                     {janazaSuggestions.suggestedTimes.map((time, index) => (
                       <li key={index} className="text-foreground">
-                        {new Date(time).toLocaleString('en-BD', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Asia/Dhaka' })}
+                        {new Date(time).toLocaleString('bn-BD', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Asia/Dhaka' })}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-lg mb-2">Reasoning:</h4>
+                  <h4 className="font-semibold text-lg mb-2">কারণ:</h4>
                   <p className="text-muted-foreground whitespace-pre-wrap">{janazaSuggestions.reasoning}</p>
                 </div>
               </CardContent>

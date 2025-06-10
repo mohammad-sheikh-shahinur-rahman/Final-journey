@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/report-death', label: 'Report Death' },
-  { href: '/services', label: 'Services' },
+  { href: '/', label: 'হোম' },
+  { href: '/report-death', label: 'মৃত্যুর প্রতিবেদন' },
+  { href: '/services', label: 'সেবাসমূহ' },
 ];
 
 export default function Navigation() {
