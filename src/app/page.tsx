@@ -135,9 +135,9 @@ export default function Home() {
             </ul>
           </div>
           <Image
-            src="https://placehold.co/600x400.png"
-            alt="শান্তিপূর্ণ দৃশ্য"
-            data-ai-hint="serene nature"
+            src="https://i.ibb.co/JRVGR0tL/AIRetouch-20250610-115309345.jpg"
+            alt="সহায়ক চিত্র"
+            data-ai-hint="custom image"
             width={600}
             height={400}
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
