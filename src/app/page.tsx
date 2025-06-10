@@ -444,6 +444,7 @@ export default function Home() {
             width={600}
             height={400}
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
+            priority={true}
           />
         </div>
       </section>
@@ -453,4 +454,5 @@ export default function Home() {
     
 
     
+
 
