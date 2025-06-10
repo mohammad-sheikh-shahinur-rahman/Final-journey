@@ -2,22 +2,26 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CalendarIcon, Loader2, AlertTriangle, PenSquare, Copy } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { CalendarIcon, Loader2, AlertTriangle, PenSquare, Copy, Image as ImageIcon, Download } from 'lucide-react';
 import { generateObituary, type GenerateObituaryInput, type GenerateObituaryOutput } from '@/ai/flows/generate-obituary-flow';
+import { generateMemorialImage, type MemorialImageInput, type MemorialImageOutput } from '@/ai/flows/generate-memorial-image-flow';
 import { useToast } from "@/hooks/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { bn } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 
 const obituarySchema = z.object({
   deceasedName: z.string().min(1, 'মৃত ব্যক্তির নাম আবশ্যক'),
@@ -30,10 +34,22 @@ const obituarySchema = z.object({
 
 type ObituaryFormValues = z.infer<typeof obituarySchema>;
 
+const imageThemes = [
+  { value: 'শান্তিপূর্ণ প্রকৃতির দৃশ্য', label: 'শান্তিপূর্ণ প্রকৃতির দৃশ্য' },
+  { value: 'স্মৃতির আলো (যেমন মোমবাতি বা লণ্ঠন)', label: 'স্মৃতির আলো (মোমবাতি/লণ্ঠন)' },
+  { value: 'শ্রদ্ধাঞ্জলি ফুল (যেমন সাদা লিলি বা গোলাপ)', label: 'শ্রদ্ধাঞ্জলি ফুল (সাদা লিলি/গোলাপ)' },
+  { value: 'শান্ত আকাশ বা মেঘ', label: 'শান্ত আকাশ বা মেঘ' },
+  { value: 'ঐতিহ্যবাহী নকশা (সূক্ষ্ম ও পরিশীলিত)', label: 'ঐতিহ্যবাহী নকশা (সূক্ষ্ম)' },
+  { value: 'একটি খোলা বই এবং পালকের কলম', label: 'খোলা বই ও পালকের কলম' },
+];
+
 export default function GenerateObituaryPage() {
-  const [loading, setLoading] = useState(false);
+  const [loadingObituary, setLoadingObituary] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const [generatedObituary, setGeneratedObituary] = useState<string | null>(null);
+  const [generatedImageDataUri, setGeneratedImageDataUri] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedImageTheme, setSelectedImageTheme] = useState<string>(imageThemes[0].value);
   const { toast } = useToast();
 
   const {
@@ -49,10 +65,11 @@ export default function GenerateObituaryPage() {
   const selectedBirthDate = watch('dateOfBirth');
   const selectedDeathDate = watch('dateOfDeath');
 
-  const onSubmit: SubmitHandler<ObituaryFormValues> = async (data) => {
-    setLoading(true);
+  const onObituarySubmit: SubmitHandler<ObituaryFormValues> = async (data) => {
+    setLoadingObituary(true);
     setError(null);
     setGeneratedObituary(null);
+    setGeneratedImageDataUri(null); 
 
     try {
       const aiInput: GenerateObituaryInput = {
@@ -68,7 +85,7 @@ export default function GenerateObituaryPage() {
       setGeneratedObituary(result.obituaryText);
       toast({
         title: "স্মরণিকা প্রস্তুত",
-        description: "এআই দ্বারা স্মরণিকা তৈরি করা হয়েছে।",
+        description: "এআই দ্বারা স্মরণিকা তৈরি করা হয়েছে। আপনি চাইলে এখন একটি স্মৃতিচিহ্নস্বরূপ ছবিও তৈরি করতে পারেন।",
       });
     } catch (e) {
       console.error(e);
@@ -80,7 +97,38 @@ export default function GenerateObituaryPage() {
         variant: "destructive",
       });
     } finally {
-      setLoading(false);
+      setLoadingObituary(false);
+    }
+  };
+
+  const handleGenerateImage = async () => {
+    if (!selectedImageTheme) {
+      toast({ title: "থিম নির্বাচন করুন", description: "অনুগ্রহ করে ছবি তৈরির জন্য একটি থিম নির্বাচন করুন।", variant: "destructive" });
+      return;
+    }
+    setLoadingImage(true);
+    setError(null);
+    setGeneratedImageDataUri(null);
+
+    try {
+      const imageInput: MemorialImageInput = { theme: selectedImageTheme };
+      const result: MemorialImageOutput = await generateMemorialImage(imageInput);
+      setGeneratedImageDataUri(result.imageDataUri);
+      toast({
+        title: "ছবি প্রস্তুত",
+        description: "স্মরণিকার জন্য স্মৃতিচিহ্নস্বরূপ ছবি তৈরি করা হয়েছে।",
+      });
+    } catch (e) {
+      console.error(e);
+      const errorMessage = e instanceof Error ? e.message : 'একটি অজানা ত্রুটি ঘটেছে। ছবিটি তৈরি করতে কয়েক মুহূর্ত সময় লাগতে পারে অথবা নির্বাচিত মডেলটি এই মুহূর্তে উপলব্ধ নাও থাকতে পারে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।';
+      setError(`ছবি তৈরি করতে ব্যর্থ: ${errorMessage}`);
+      toast({
+        title: "ত্রুটি",
+        description: `ছবি তৈরি করতে ব্যর্থ: ${errorMessage}`,
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingImage(false);
     }
   };
 
@@ -97,18 +145,30 @@ export default function GenerateObituaryPage() {
     }
   };
 
+  const handleDownloadImage = () => {
+    if (generatedImageDataUri) {
+      const link = document.createElement('a');
+      link.href = generatedImageDataUri;
+      link.download = 'memorial_image.png'; // Suggests a filename for the download
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast({ title: "ডাউনলোড শুরু হয়েছে", description: "ছবিটি ডাউনলোড করা হচ্ছে।" });
+    }
+  };
+
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
       <Card className="max-w-3xl mx-auto shadow-xl">
         <CardHeader className="text-center">
           <PenSquare className="h-12 w-12 mx-auto text-primary mb-2" />
-          <CardTitle className="text-3xl font-headline">এআই চালিত স্মরণিকা তৈরি করুন</CardTitle>
+          <CardTitle className="text-3xl font-headline">এআই চালিত স্মরণিকা ও স্মৃতিচিহ্ন তৈরি</CardTitle>
           <CardDescription>
-            প্রিয়জনের জীবনের গল্প ও স্মৃতিগুলো সুন্দরভাবে তুলে ধরতে প্রয়োজনীয় তথ্য দিন। আমাদের এআই সিস্টেম একটি খসড়া স্মরণিকা তৈরি করতে সাহায্য করবে।
+            প্রিয়জনের জীবনের গল্প ও স্মৃতিগুলো সুন্দরভাবে তুলে ধরতে প্রয়োজনীয় তথ্য দিন। আমাদের এআই সিস্টেম একটি খসড়া স্মরণিকা এবং ঐচ্ছিকভাবে একটি স্মৃতিচিহ্নস্বরূপ ছবি তৈরি করতে সাহায্য করবে।
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onObituarySubmit)} className="space-y-6">
             <div>
               <Label htmlFor="deceasedName">মৃত ব্যক্তির পুরো নাম</Label>
               <Input id="deceasedName" {...register('deceasedName')} />
@@ -195,8 +255,8 @@ export default function GenerateObituaryPage() {
               {errors.survivedBy && <p className="text-destructive text-sm mt-1">{errors.survivedBy.message}</p>}
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <PenSquare className="mr-2 h-4 w-4" />}
+            <Button type="submit" disabled={loadingObituary || loadingImage} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+              {loadingObituary ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <PenSquare className="mr-2 h-4 w-4" />}
               স্মরণিকা তৈরি করুন
             </Button>
           </form>
@@ -212,19 +272,66 @@ export default function GenerateObituaryPage() {
           )}
 
           {generatedObituary && (
-            <Card className="mt-8 shadow-md border-accent">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-2xl font-headline text-accent flex items-center">
-                  <PenSquare className="mr-2 h-6 w-6" /> তৈরি করা স্মরণিকা
-                </CardTitle>
-                <Button variant="outline" size="icon" onClick={handleCopyToClipboard} aria-label="স্মরণিকা কপি করুন">
-                  <Copy className="h-5 w-5" />
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground whitespace-pre-wrap">{generatedObituary}</p>
-              </CardContent>
-            </Card>
+            <>
+              <Card className="mt-8 shadow-md border-accent">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-2xl font-headline text-accent flex items-center">
+                    <PenSquare className="mr-2 h-6 w-6" /> তৈরি করা স্মরণিকা
+                  </CardTitle>
+                  <Button variant="outline" size="icon" onClick={handleCopyToClipboard} aria-label="স্মরণিকা কপি করুন">
+                    <Copy className="h-5 w-5" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-muted-foreground whitespace-pre-wrap">{generatedObituary}</p>
+                </CardContent>
+              </Card>
+
+              <Separator className="my-8" />
+
+              <Card className="mt-8 shadow-md border-primary">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-headline text-primary flex items-center">
+                    <ImageIcon className="mr-2 h-6 w-6" /> স্মরণিকার জন্য স্মৃতিচিহ্নস্বরূপ ছবি (ঐচ্ছিক)
+                  </CardTitle>
+                  <CardDescription>একটি থিম নির্বাচন করে স্মরণিকার জন্য একটি প্রাসঙ্গিক ছবি তৈরি করুন।</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="imageTheme">ছবির থিম নির্বাচন করুন</Label>
+                    <Select 
+                      value={selectedImageTheme} 
+                      onValueChange={setSelectedImageTheme}
+                    >
+                      <SelectTrigger id="imageTheme">
+                        <SelectValue placeholder="একটি থিম নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {imageThemes.map(theme => (
+                          <SelectItem key={theme.value} value={theme.value}>
+                            {theme.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button onClick={handleGenerateImage} disabled={loadingImage || loadingObituary || !selectedImageTheme} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                    {loadingImage ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ImageIcon className="mr-2 h-4 w-4" />}
+                    ছবি তৈরি করুন
+                  </Button>
+                </CardContent>
+                {generatedImageDataUri && (
+                  <CardFooter className="flex flex-col items-center space-y-4 pt-4">
+                    <div className="relative w-full max-w-md aspect-video rounded-md overflow-hidden border shadow-inner">
+                       <Image src={generatedImageDataUri} alt="তৈরি করা স্মৃতিচিহ্নস্বরূপ ছবি" layout="fill" objectFit="contain" data-ai-hint="memorial image"/>
+                    </div>
+                    <Button variant="outline" onClick={handleDownloadImage} className="w-full max-w-md">
+                      <Download className="mr-2 h-4 w-4" /> ছবি ডাউনলোড করুন
+                    </Button>
+                  </CardFooter>
+                )}
+              </Card>
+            </>
           )}
         </CardContent>
       </Card>
