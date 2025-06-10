@@ -33,27 +33,29 @@ const testimonialSchema = z.object({
 
 type TestimonialFormValues = z.infer<typeof testimonialSchema>;
 
+const newImageUrl = "https://i.ibb.co/8ggZLNpJ/AIRetouch-20250610-115309345.jpg";
+
 const defaultTestimonials: TestimonialEntry[] = [
   {
     id: 'default-1',
     quote: "এই অ্যাপটি ব্যবহার করে খুব সহজেই জানাজার সময় এবং অন্যান্য তথ্য পেয়েছি। এমন কঠিন সময়ে এই সাহায্যটুকু অনেক বড়।",
     name: "একজন ব্যবহারকারী",
-    image: "https://placehold.co/100x100.png",
-    aiHint: "person avatar"
+    image: newImageUrl,
+    aiHint: "default image"
   },
   {
     id: 'default-2',
     quote: "এআই দিয়ে স্মরণিকা তৈরির ফিচারটা অসাধারণ। আমার বাবার জীবনের কথাগুলো সুন্দরভাবে সাজাতে পেরেছি।",
     name: "আরেকজন ব্যবহারকারী",
-    image: "https://placehold.co/100x100.png",
-    aiHint: "person avatar"
+    image: newImageUrl,
+    aiHint: "default image"
   },
   {
     id: 'default-3',
     quote: "সেবক (এআই চ্যাট) অনেক সহানুভূতি নিয়ে আমার প্রশ্নের উত্তর দিয়েছে। মনে হয়েছে কেউ সত্যিই পাশে আছে।",
     name: "একজন কৃতজ্ঞ ব্যবহারকারী",
-    image: "https://placehold.co/100x100.png",
-    aiHint: "person avatar"
+    image: newImageUrl,
+    aiHint: "default image"
   }
 ];
 
@@ -201,7 +203,7 @@ export default function Home() {
         name: data.name,
         quote: data.quote,
         image: data.image,
-        aiHint: data.image ? "user uploaded avatar" : "person avatar"
+        aiHint: data.image ? "user uploaded avatar" : "default image"
       };
 
       const existingTestimonialsString = localStorage.getItem('userTestimonials');
@@ -392,7 +394,7 @@ export default function Home() {
               {testimonialsToDisplay.map((testimonial) => (
                 <Card key={testimonial.id} className="flex flex-col items-center text-center shadow-lg rounded-xl p-6 bg-card">
                    <Avatar className="h-24 w-24 mb-4 border-2 border-primary">
-                    <AvatarImage src={testimonial.image || "https://placehold.co/100x100.png"} alt={testimonial.name} data-ai-hint={testimonial.aiHint || "person avatar"} />
+                    <AvatarImage src={testimonial.image || newImageUrl} alt={testimonial.name} data-ai-hint={testimonial.aiHint || "default image"} />
                     <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <CardContent className="p-0">
@@ -438,7 +440,7 @@ export default function Home() {
             </ul>
           </div>
           <Image
-            src="https://i.ibb.co/JRVGR0t/AIRetouch-20250610-115309345.jpg"
+            src={newImageUrl}
             alt="সহায়ক চিত্র"
             data-ai-hint="custom image"
             width={600}
@@ -459,5 +461,7 @@ export default function Home() {
 
 
 
+
+    
 
     

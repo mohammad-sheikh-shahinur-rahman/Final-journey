@@ -74,11 +74,12 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
   );
 }
 
+const newGlobalImageUrl = "https://i.ibb.co/8ggZLNpJ/AIRetouch-20250610-115309345.jpg";
 
 const mockImams: ImamEntry[] = [
-  { id: 'mock-1', name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা, ঢাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ, শোকসভা পরিচালনা", image: "https://placehold.co/300x200.png" },
-  { id: 'mock-2', name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা, ঢাকা", phone: "01800-000002", expertise: "দাফন প্রক্রিয়া তত্ত্বাবধান, কুরআন তিলাওয়াত, ধর্মীয় আলোচনা", image: "https://placehold.co/300x200.png"  },
-  { id: 'mock-3', name: "ইমাম ফাতিমা খাতুন (মহিলা)", mosque: "মোহাম্মদপুর এলাকা (মহিলাদের জন্য বিশেষ সহায়তা), ঢাকা", phone: "01900-000003", expertise: "মহিলাদের মৃতদেহ প্রস্তুতি, পরিবারকে মানসিক সহায়তা, মহিলাদের জন্য দোয়া", image: "https://placehold.co/300x200.png"  },
+  { id: 'mock-1', name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা, ঢাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ, শোকসভা পরিচালনা", image: newGlobalImageUrl },
+  { id: 'mock-2', name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা, ঢাকা", phone: "01800-000002", expertise: "দাফন প্রক্রিয়া তত্ত্বাবধান, কুরআন তিলাওয়াত, ধর্মীয় আলোচনা", image: newGlobalImageUrl  },
+  { id: 'mock-3', name: "ইমাম ফাতিমা খাতুন (মহিলা)", mosque: "মোহাম্মদপুর এলাকা (মহিলাদের জন্য বিশেষ সহায়তা), ঢাকা", phone: "01900-000003", expertise: "মহিলাদের মৃতদেহ প্রস্তুতি, পরিবারকে মানসিক সহায়তা, মহিলাদের জন্য দোয়া", image: newGlobalImageUrl  },
 ];
 
 const additionalServices = [
@@ -167,7 +168,7 @@ export default function ServicesPage() {
                   <Image 
                     src={imam.image} 
                     alt={imam.name} 
-                    data-ai-hint={imam.id.startsWith('mock-') ? (imam.id === 'mock-3' ? 'woman portrait' : 'man portrait') : "imam profile"}
+                    data-ai-hint={"default placeholder"}
                     layout="fill" 
                     objectFit="cover" 
                     className="rounded-t-xl"
@@ -225,3 +226,4 @@ export default function ServicesPage() {
   );
 }
 
+    
