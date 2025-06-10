@@ -1,9 +1,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck } from "lucide-react";
+import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck, ShieldCheck, Quote } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
   const services = [
@@ -83,6 +84,27 @@ export default function Home() {
     }
   ];
 
+  const testimonials = [
+    {
+      quote: "এই অ্যাপটি ব্যবহার করে খুব সহজেই জানাজার সময় এবং অন্যান্য তথ্য পেয়েছি। এমন কঠিন সময়ে এই সাহায্যটুকু অনেক বড়।",
+      name: "একজন ব্যবহারকারী",
+      avatar: "https://placehold.co/100x100.png",
+      aiHint: "person avatar"
+    },
+    {
+      quote: "এআই দিয়ে স্মরণিকা তৈরির ফিচারটা অসাধারণ। আমার বাবার জীবনের কথাগুলো সুন্দরভাবে সাজাতে পেরেছি।",
+      name: "আরেকজন ব্যবহারকারী",
+      avatar: "https://placehold.co/100x100.png",
+      aiHint: "person avatar"
+    },
+    {
+      quote: "সেবক (এআই চ্যাট) অনেক সহানুভূতি নিয়ে আমার প্রশ্নের উত্তর দিয়েছে। মনে হয়েছে কেউ সত্যিই পাশে আছে।",
+      name: "একজন কৃতজ্ঞ ব্যবহারকারী",
+      avatar: "https://placehold.co/100x100.png",
+      aiHint: "person avatar"
+    }
+  ];
+
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
@@ -151,6 +173,44 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="p-0">
                   <CardDescription className="text-muted-foreground">{step.description}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Mission Section */}
+      <section className="w-full py-12 md:py-24 lg:py-20 bg-background">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+            <ShieldCheck className="h-12 w-12 text-accent mb-2" />
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">আমাদের লক্ষ্য</h2>
+            <p className="max-w-[900px] text-muted-foreground md:text-lg text-center">
+              অন্তিম যাত্রার মূল লক্ষ্য হলো এই কঠিন সময়ে আপনাদের পাশে থেকে অন্ত্যেষ্টিক্রিয়া সম্পর্কিত যাবতীয় প্রক্রিয়া সহজ ও সম্মানজনক করে তোলা। আমরা প্রযুক্তি এবং সহানুভূতির সমন্বয়ে এমন একটি প্ল্যাটফর্ম তৈরি করেছি, যেখানে আপনি প্রয়াত প্রিয়জনের স্মৃতিকে যথাযথভাবে সংরক্ষণ করতে এবং প্রয়োজনীয় সকল কার্যক্রমে স্বচ্ছতা ও স্বস্তি খুঁজে পাবেন।
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section (Placeholder) */}
+      <section className="w-full py-12 md:py-24 lg:py-20 bg-secondary/30">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+            <Quote className="h-12 w-12 text-accent mb-2" />
+            <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">ব্যবহারকারীদের কথা</h2>
+            <p className="max-w-[900px] text-muted-foreground md:text-lg">আমাদের ব্যবহারকারীরা কী বলছেন শুনুন (কাল্পনিক উদাহরণ):</p>
+          </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="flex flex-col items-center text-center shadow-lg rounded-xl p-6 bg-card">
+                <Avatar className="h-20 w-20 mb-4 border-2 border-primary">
+                  <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.aiHint} />
+                  <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <CardContent className="p-0">
+                  <blockquote className="text-muted-foreground italic mb-4">"{testimonial.quote}"</blockquote>
+                  <p className="font-semibold text-foreground">{testimonial.name}</p>
                 </CardContent>
               </Card>
             ))}
