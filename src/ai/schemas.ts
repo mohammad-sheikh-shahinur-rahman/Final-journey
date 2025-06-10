@@ -1,5 +1,5 @@
 
-import {z} from 'genkit';
+import { z } from 'zod';
 
 // For chat-flow.ts
 export const ChatMessageSchema = z.object({
@@ -84,3 +84,4 @@ export const SuggestJanazaTimeOutputSchema = z.object({
       'The reasoning behind the suggested times, considering Islamic traditions, local masjid schedules, and daylight hours.'
     ),
 });
+
