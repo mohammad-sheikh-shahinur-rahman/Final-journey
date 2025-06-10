@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare, MessageSquare, FileSignature } from "lucide-react";
+import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare, MessageSquare, FileSignature, Send } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,6 +27,13 @@ export default function Home() {
       icon: <FileSignature className="h-10 w-10 text-primary mb-4" />,
       link: "/plan-ahead",
       cta: "পরিকল্পনা করুন"
+    },
+     {
+      title: "আমন্ত্রণ সহায়তা",
+      description: "এআই এর সাহায্যে জানাজা, দোয়া মাহফিল ও অন্যান্য অনুষ্ঠানের জন্য আমন্ত্রণ বার্তা তৈরি করুন এবং সহজে শেয়ার করুন।",
+      icon: <Send className="h-10 w-10 text-primary mb-4" />,
+      link: "/invitations",
+      cta: "আমন্ত্রণ তৈরি করুন"
     },
     {
       title: "এআই চ্যাট সহকারী",

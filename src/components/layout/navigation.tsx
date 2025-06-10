@@ -11,6 +11,7 @@ const navItems = [
   { href: '/services', label: 'সেবাসমূহ' },
   { href: '/generate-obituary', label: 'স্মরণিকা জেনারেটর' },
   { href: '/plan-ahead', label: 'আগাম পরিকল্পনা' },
+  { href: '/invitations', label: 'আমন্ত্রণ সহায়তা' },
   { href: '/chat', label: 'এআই চ্যাট' },
 ];
 
