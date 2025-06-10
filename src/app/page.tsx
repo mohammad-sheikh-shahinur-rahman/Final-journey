@@ -3,7 +3,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck, ShieldCheck, Quote, UserPlus, Loader2, AlertTriangle, ImageUp } from "lucide-react";
+import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck, ShieldCheck, Quote, UserPlus, Loader2, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -68,7 +68,7 @@ export default function Home() {
     },
     {
       title: "এআই স্মরণিকা জেনারেটর",
-      description: "প্রিয়জনের জীবনের উল্লেখযোগ্য ঘটনা ও স্মৃতির উপর ভিত্তি করে একটি সহানুভূতিপূর্ণ স্মরণিকা তৈরি করুন।",
+      description: "প্রিয়জনের জীবনের উল্লেখযোগ্য ঘটনা ও স্মৃতির উপর ভিত্তি করে একটি সহানুভূতিপূর্ণ স্মরণিকা তৈরি করুন। ঐচ্ছিকভাবে স্মৃতিচিহ্নস্বরূপ ছবিও তৈরি করতে পারবেন।",
       icon: <PenSquare className="h-10 w-10 text-primary mb-4" />,
       link: "/generate-obituary",
       cta: "স্মরণিকা তৈরি করুন"
@@ -96,7 +96,7 @@ export default function Home() {
     },
     {
       title: "পরিষেবা প্রদানকারী খুঁজুন",
-      description: "জানাজার অনুষ্ঠানের জন্য স্থানীয় ইমাম এবং অন্যান্য অপরিহার্য পরিষেবা প্রদানকারীদের সাথে সংযোগ স্থাপন করুন।",
+      description: "জানাজার অনুষ্ঠানের জন্য স্থানীয় ইমাম এবং অন্যান্য অপরিহার্য পরিষেবা প্রদানকারীদের সাথে সংযোগ স্থাপন করুন। ইমামগণ ছবিসহ তাদের প্রোফাইল তৈরি করতে পারেন।",
       icon: <Users className="h-10 w-10 text-primary mb-4" />,
       link: "/services",
       cta: "প্রদানকারী খুঁজুন"
@@ -156,7 +156,7 @@ export default function Home() {
     if (storedTestimonialsString) {
       try {
         const loadedTestimonials: TestimonialEntry[] = JSON.parse(storedTestimonialsString);
-        setUserTestimonials(loadedTestimonials.reverse()); // Show newest first
+        setUserTestimonials(loadedTestimonials.reverse()); 
       } catch (error) {
         console.error("Failed to parse testimonials from local storage:", error);
         setUserTestimonials([]);
@@ -167,13 +167,13 @@ export default function Home() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+      if (file.size > 2 * 1024 * 1024) { 
         toast({
           title: "ফাইলের আকার বড়",
           description: "অনুগ্রহ করে ২MB এর চেয়ে ছোট ছবি আপলোড করুন।",
           variant: "destructive",
         });
-        event.target.value = ''; // Clear the input
+        event.target.value = ''; 
         setImagePreview(null);
         setValueTestimonial('image', undefined);
         return;
@@ -209,7 +209,7 @@ export default function Home() {
       
       existingTestimonials.push(newTestimonial);
       localStorage.setItem('userTestimonials', JSON.stringify(existingTestimonials));
-      setUserTestimonials(prev => [newTestimonial, ...prev]); // Add to current state and show newest first
+      setUserTestimonials(prev => [newTestimonial, ...prev]);
 
       toast({
         title: "মতামত জমা হয়েছে",
@@ -315,7 +315,7 @@ export default function Home() {
             <ShieldCheck className="h-12 w-12 text-accent mb-2" />
             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">আমাদের লক্ষ্য</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-lg text-center">
-              অন্তিম যাত্রার মূল লক্ষ্য হলো এই কঠিন সময়ে আপনাদের পাশে থেকে অন্ত্যেষ্টিক্রিয়া সম্পর্কিত যাবতীয় প্রক্রিয়া সহজ ও সম্মানজনক করে তোলা। আমরা প্রযুক্তি এবং সহানুভূতির সমন্বয়ে এমন একটি প্ল্যাটফর্ম তৈরি করেছি, যেখানে আপনি প্রয়াত প্রিয়জনের স্মৃতিকে যথাযথভাবে সংরক্ষণ করতে এবং প্রয়োজনীয় সকল কার্যক্রমে স্বচ্ছতা ও স্বস্তি খুঁজে পাবেন।
+              অন্তিম যাত্রার মূল লক্ষ্য হলো এই কঠিন সময়ে আপনাদের পাশে থেকে অন্ত্যেষ্টিক্রিয়া সম্পর্কিত যাবতীয় প্রক্রিয়া সহজ ও সম্মানজনক করে তোলা। আমরা প্রযুক্তি এবং সহানুভূতির সমন্বয়ে এমন একটি প্ল্যাটফর্ম তৈরি করেছি, যেখানে আপনি প্রয়াত প্রিয়জনের স্মৃতিকে যথাযথভাবে সংরক্ষণ করতে এবং প্রয়োজনীয় সকল কার্যক্রমে স্বচ্ছতা ও স্বস্তি খুঁজে পাবেন। আমাদের এই পরিষেবাটি সম্পূর্ণ বিনামূল্যে।
             </p>
           </div>
         </div>
@@ -438,7 +438,7 @@ export default function Home() {
             </ul>
           </div>
           <Image
-            src="https://i.ibb.co/JRVGR0tL/AIRetouch-20250610-115309345.jpg"
+            src="https://i.ibb.co/JRVGR0t/AIRetouch-20250610-115309345.jpg"
             alt="সহায়ক চিত্র"
             data-ai-hint="custom image"
             width={600}

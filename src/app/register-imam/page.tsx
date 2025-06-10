@@ -52,6 +52,17 @@ export default function RegisterImamPage() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        toast({
+          title: "ফাইলের আকার বড়",
+          description: "অনুগ্রহ করে ২MB এর চেয়ে ছোট ছবি আপলোড করুন।",
+          variant: "destructive",
+        });
+        event.target.value = ''; // Clear the input
+        setImagePreview(null);
+        setValue('image', undefined);
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         const dataUri = reader.result as string;
@@ -109,7 +120,7 @@ export default function RegisterImamPage() {
           <UserPlus className="h-12 w-12 mx-auto text-primary mb-2" />
           <CardTitle className="text-3xl font-headline">নতুন ইমাম রেজিস্ট্রেশন</CardTitle>
           <CardDescription>
-            অনুগ্রহ করে ইমাম সম্পর্কিত তথ্য পূরণ করুন। এই তথ্য লোকাল স্টোরেজে সংরক্ষিত হবে।
+            অনুগ্রহ করে ইমাম সম্পর্কিত তথ্য পূরণ করুন। এই তথ্য লোকাল স্টোরেজে সংরক্ষিত হবে। ছবি আপলোড ঐচ্ছিক।
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -144,7 +155,7 @@ export default function RegisterImamPage() {
             </div>
             
             <div>
-              <Label htmlFor="imageFile">ইমামের ছবি (ঐচ্ছিক)</Label>
+              <Label htmlFor="imageFile">ইমামের ছবি (ঐচ্ছিক, সর্বোচ্চ ২MB)</Label>
               <div className="flex items-center space-x-4">
                 <Input 
                   id="imageFile" 
@@ -188,3 +199,4 @@ export default function RegisterImamPage() {
     </div>
   );
 }
+

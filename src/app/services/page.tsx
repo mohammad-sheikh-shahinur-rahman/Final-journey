@@ -15,7 +15,8 @@ import { z } from 'zod';
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import type { ImamEntry } from '@/app/register-imam/page'; // Import ImamEntry type
+import type { ImamEntry } from '@/app/register-imam/page'; 
+import Link from 'next/link';
 
 
 const contactFormSchema = z.object({
@@ -38,6 +39,7 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
   });
 
   const onSubmit: SubmitHandler<ContactFormValues> = (data) => {
+    // This is a placeholder. In a real app, this would send data to a backend.
     console.log("Contact form submitted for " + serviceName + ":", data);
     toast({
       title: "অনুসন্ধান পাঠানো হয়েছে",
@@ -74,9 +76,9 @@ function ContactServiceForm({ serviceName }: ContactServiceFormProps) {
 
 
 const mockImams: ImamEntry[] = [
-  { id: 'mock-1', name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা, ঢাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ, শোকসভা পরিচালনা", image: "https://placehold.co/300x200.png?text=Imam+1" },
-  { id: 'mock-2', name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা, ঢাকা", phone: "01800-000002", expertise: "দাফন প্রক্রিয়া তত্ত্বাবধান, কুরআন তিলাওয়াত, ধর্মীয় আলোচনা", image: "https://placehold.co/300x200.png?text=Imam+2"  },
-  { id: 'mock-3', name: "ইমাম ফাতিমা খাতুন (মহিলা)", mosque: "মোহাম্মদপুর এলাকা (মহিলাদের জন্য বিশেষ সহায়তা), ঢাকা", phone: "01900-000003", expertise: "মহিলাদের মৃতদেহ প্রস্তুতি, পরিবারকে মানসিক সহায়তা, মহিলাদের জন্য দোয়া", image: "https://placehold.co/300x200.png?text=Imam+3"  },
+  { id: 'mock-1', name: "ইমাম আবদুল্লাহ আল-মামুন", mosque: "বায়তুল মোকাররম জাতীয় মসজিদ এলাকা, ঢাকা", phone: "01700-000001", expertise: "জানাজার নামাজ, ইসলামিক পরামর্শ, শোকসভা পরিচালনা", image: "https://placehold.co/300x200.png" },
+  { id: 'mock-2', name: "ইমাম হাসান মাহমুদ", mosque: "গুলশান সেন্ট্রাল মসজিদ এলাকা, ঢাকা", phone: "01800-000002", expertise: "দাফন প্রক্রিয়া তত্ত্বাবধান, কুরআন তিলাওয়াত, ধর্মীয় আলোচনা", image: "https://placehold.co/300x200.png"  },
+  { id: 'mock-3', name: "ইমাম ফাতিমা খাতুন (মহিলা)", mosque: "মোহাম্মদপুর এলাকা (মহিলাদের জন্য বিশেষ সহায়তা), ঢাকা", phone: "01900-000003", expertise: "মহিলাদের মৃতদেহ প্রস্তুতি, পরিবারকে মানসিক সহায়তা, মহিলাদের জন্য দোয়া", image: "https://placehold.co/300x200.png"  },
 ];
 
 const additionalServices = [
@@ -109,6 +111,8 @@ const additionalServices = [
 
 export default function ServicesPage() {
   const [imamsToDisplay, setImamsToDisplay] = React.useState<ImamEntry[]>(mockImams);
+  const [noRegisteredImamsMessage, setNoRegisteredImamsMessage] = React.useState<string | null>(null);
+
 
   React.useEffect(() => {
     const storedImamsString = localStorage.getItem('registeredImams');
@@ -116,16 +120,22 @@ export default function ServicesPage() {
       try {
         const loadedImams: ImamEntry[] = JSON.parse(storedImamsString);
         if (loadedImams.length > 0) {
-          setImamsToDisplay(loadedImams.reverse()); // Show newest first
+          setImamsToDisplay(loadedImams.reverse()); 
+          setNoRegisteredImamsMessage(null);
         } else {
-          setImamsToDisplay(mockImams);
+          // No imams in local storage, but storage item exists (empty array)
+          setImamsToDisplay([]);
+          setNoRegisteredImamsMessage("এখনও কোনো ইমাম রেজিস্টার করা হয়নি।");
         }
       } catch (error) {
         console.error("Failed to parse imams from local storage:", error);
         setImamsToDisplay(mockImams); // Fallback to mock if parsing fails
+        setNoRegisteredImamsMessage("ইমামদের তালিকা লোড করতে সমস্যা হয়েছে। ডিফল্ট তালিকা দেখানো হচ্ছে।");
       }
     } else {
+        // No local storage item 'registeredImams'
         setImamsToDisplay(mockImams);
+        setNoRegisteredImamsMessage("স্থানীয়ভাবে কোনো ইমাম রেজিস্টার করা নেই, তাই ডিফল্ট তালিকা দেখানো হচ্ছে।");
     }
   }, []);
 
@@ -137,19 +147,25 @@ export default function ServicesPage() {
           <Landmark className="h-16 w-16 mx-auto text-primary mb-4" />
           <h1 className="text-4xl font-headline font-bold text-foreground">ইমাম ও ধর্মীয় ব্যক্তিত্ব খুঁজুন</h1>
           <p className="text-muted-foreground mt-3 md:text-xl max-w-2xl mx-auto">
-            জানাজার নামাজ পরিচালনা, ধর্মীয় পরামর্শ এবং অন্যান্য ধর্মীয় আচার-অনুষ্ঠানের জন্য অভিজ্ঞ ইমাম ও ধর্মীয় ব্যক্তিত্বদের সাথে সংযোগ স্থাপন করুন। (নিচের তালিকাটি আপনার লোকাল স্টোরেজে সেভ করা ইমামদের দেখাচ্ছে, যদি থাকে)
+            জানাজার নামাজ পরিচালনা, ধর্মীয় পরামর্শ এবং অন্যান্য ধর্মীয় আচার-অনুষ্ঠানের জন্য অভিজ্ঞ ইমাম ও ধর্মীয় ব্যক্তিত্বদের সাথে সংযোগ স্থাপন করুন।
           </p>
+           <Link href="/register-imam" className="mt-4 inline-block">
+             <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
+                নতুন ইমাম রেজিস্টার করুন
+             </Button>
+           </Link>
         </div>
-        {imamsToDisplay.length === 0 ? (
-           <p className="text-center text-muted-foreground">এখনও কোনো ইমাম রেজিস্টার করা হয়নি। <a href="/register-imam" className="text-primary hover:underline">এখানে ক্লিক করে</a> নতুন ইমাম রেজিস্টার করুন।</p>
-        ) : (
+        {noRegisteredImamsMessage && imamsToDisplay.length === 0 && (
+           <p className="text-center text-muted-foreground mb-8">{noRegisteredImamsMessage}</p>
+        )}
+        {imamsToDisplay.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {imamsToDisplay.map(imam => (
             <Card key={imam.id} className="flex flex-col shadow-xl hover:shadow-2xl transition-shadow duration-300 rounded-xl overflow-hidden bg-card">
               <div className="relative w-full h-56 bg-muted flex items-center justify-center rounded-t-xl">
                 {imam.image ? (
                   <Image 
-                    src={imam.image} // This will be a Data URI for registered imams
+                    src={imam.image} 
                     alt={imam.name} 
                     data-ai-hint={imam.id.startsWith('mock-') ? (imam.id === 'mock-3' ? 'woman portrait' : 'man portrait') : "imam profile"}
                     layout="fill" 
@@ -175,6 +191,8 @@ export default function ServicesPage() {
             </Card>
           ))}
         </div>
+        ) : (
+          !noRegisteredImamsMessage && <p className="text-center text-muted-foreground">ইমামদের তালিকা লোড হচ্ছে...</p>
         )}
       </section>
 
@@ -206,3 +224,4 @@ export default function ServicesPage() {
     </div>
   );
 }
+

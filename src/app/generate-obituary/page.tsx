@@ -57,7 +57,8 @@ export default function GenerateObituaryPage() {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch
+    watch,
+    control
   } = useForm<ObituaryFormValues>({
     resolver: zodResolver(obituarySchema),
   });
@@ -149,7 +150,7 @@ export default function GenerateObituaryPage() {
     if (generatedImageDataUri) {
       const link = document.createElement('a');
       link.href = generatedImageDataUri;
-      link.download = 'memorial_image.png'; // Suggests a filename for the download
+      link.download = 'memorial_image.png'; 
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -178,61 +179,73 @@ export default function GenerateObituaryPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="dateOfBirth">জন্ম তারিখ (ঐচ্ছিক)</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !selectedBirthDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {selectedBirthDate ? format(selectedBirthDate, "PPP", { locale: bn }) : <span>একটি তারিখ নির্বাচন করুন</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={selectedBirthDate}
-                      onSelect={(date) => setValue('dateOfBirth', date || undefined)}
-                      captionLayout="dropdown-buttons"
-                      fromYear={1900}
-                      toYear={new Date().getFullYear()}
-                      locale={bn}
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Controller
+                  name="dateOfBirth"
+                  control={control}
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? format(field.value, "PPP", { locale: bn }) : <span>একটি তারিখ নির্বাচন করুন</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          captionLayout="dropdown-buttons"
+                          fromYear={1900}
+                          toYear={new Date().getFullYear()}
+                          locale={bn}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
                 {errors.dateOfBirth && <p className="text-destructive text-sm mt-1">{errors.dateOfBirth.message}</p>}
               </div>
               <div>
                 <Label htmlFor="dateOfDeath">মৃত্যুর তারিখ</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !selectedDeathDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {selectedDeathDate ? format(selectedDeathDate, "PPP", { locale: bn }) : <span>একটি তারিখ নির্বাচন করুন</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={selectedDeathDate}
-                      onSelect={(date) => setValue('dateOfDeath', date || new Date())}
-                      initialFocus
-                      locale={bn}
-                      captionLayout="dropdown-buttons"
-                      fromYear={1900}
-                      toYear={new Date().getFullYear()}
-                    />
-                  </PopoverContent>
-                </Popover>
+                 <Controller
+                  name="dateOfDeath"
+                  control={control}
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? format(field.value, "PPP", { locale: bn }) : <span>একটি তারিখ নির্বাচন করুন</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                          locale={bn}
+                          captionLayout="dropdown-buttons"
+                          fromYear={1900}
+                          toYear={new Date().getFullYear()}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
                 {errors.dateOfDeath && <p className="text-destructive text-sm mt-1">{errors.dateOfDeath.message}</p>}
               </div>
             </div>
@@ -302,6 +315,7 @@ export default function GenerateObituaryPage() {
                     <Select 
                       value={selectedImageTheme} 
                       onValueChange={setSelectedImageTheme}
+                      disabled={loadingImage || loadingObituary}
                     >
                       <SelectTrigger id="imageTheme">
                         <SelectValue placeholder="একটি থিম নির্বাচন করুন" />
@@ -322,7 +336,7 @@ export default function GenerateObituaryPage() {
                 </CardContent>
                 {generatedImageDataUri && (
                   <CardFooter className="flex flex-col items-center space-y-4 pt-4">
-                    <div className="relative w-full max-w-md aspect-video rounded-md overflow-hidden border shadow-inner">
+                    <div className="relative w-full max-w-md aspect-video rounded-md overflow-hidden border shadow-inner bg-muted">
                        <Image src={generatedImageDataUri} alt="তৈরি করা স্মৃতিচিহ্নস্বরূপ ছবি" layout="fill" objectFit="contain" data-ai-hint="memorial image"/>
                     </div>
                     <Button variant="outline" onClick={handleDownloadImage} className="w-full max-w-md">
@@ -338,3 +352,4 @@ export default function GenerateObituaryPage() {
     </div>
   );
 }
+
