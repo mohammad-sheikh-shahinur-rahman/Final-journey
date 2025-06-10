@@ -1,10 +1,61 @@
 
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck, ShieldCheck, Quote } from "lucide-react";
+import { FileText, Users, HeartHandshake, Sparkles, PenSquare, MessageSquare, FileSignature, Send, LifeBuoy, HelpingHand, Workflow, ClipboardList, Brain, SearchCheck, ShieldCheck, Quote, UserPlus, Loader2, AlertTriangle, ImageUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import * as React from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+
+interface TestimonialEntry {
+  id: string;
+  name: string;
+  quote: string;
+  image?: string; // Data URI for the image
+  aiHint?: string;
+}
+
+const testimonialSchema = z.object({
+  name: z.string().min(1, 'আপনার নাম আবশ্যক'),
+  quote: z.string().min(30, 'আপনার মতামত কমপক্ষে ৩০ অক্ষরের হতে হবে'),
+  image: z.string().optional(),
+});
+
+type TestimonialFormValues = z.infer<typeof testimonialSchema>;
+
+const defaultTestimonials: TestimonialEntry[] = [
+  {
+    id: 'default-1',
+    quote: "এই অ্যাপটি ব্যবহার করে খুব সহজেই জানাজার সময় এবং অন্যান্য তথ্য পেয়েছি। এমন কঠিন সময়ে এই সাহায্যটুকু অনেক বড়।",
+    name: "একজন ব্যবহারকারী",
+    image: "https://placehold.co/100x100.png",
+    aiHint: "person avatar"
+  },
+  {
+    id: 'default-2',
+    quote: "এআই দিয়ে স্মরণিকা তৈরির ফিচারটা অসাধারণ। আমার বাবার জীবনের কথাগুলো সুন্দরভাবে সাজাতে পেরেছি।",
+    name: "আরেকজন ব্যবহারকারী",
+    image: "https://placehold.co/100x100.png",
+    aiHint: "person avatar"
+  },
+  {
+    id: 'default-3',
+    quote: "সেবক (এআই চ্যাট) অনেক সহানুভূতি নিয়ে আমার প্রশ্নের উত্তর দিয়েছে। মনে হয়েছে কেউ সত্যিই পাশে আছে।",
+    name: "একজন কৃতজ্ঞ ব্যবহারকারী",
+    image: "https://placehold.co/100x100.png",
+    aiHint: "person avatar"
+  }
+];
 
 export default function Home() {
   const services = [
@@ -84,26 +135,103 @@ export default function Home() {
     }
   ];
 
-  const testimonials = [
-    {
-      quote: "এই অ্যাপটি ব্যবহার করে খুব সহজেই জানাজার সময় এবং অন্যান্য তথ্য পেয়েছি। এমন কঠিন সময়ে এই সাহায্যটুকু অনেক বড়।",
-      name: "একজন ব্যবহারকারী",
-      avatar: "https://placehold.co/100x100.png",
-      aiHint: "person avatar"
-    },
-    {
-      quote: "এআই দিয়ে স্মরণিকা তৈরির ফিচারটা অসাধারণ। আমার বাবার জীবনের কথাগুলো সুন্দরভাবে সাজাতে পেরেছি।",
-      name: "আরেকজন ব্যবহারকারী",
-      avatar: "https://placehold.co/100x100.png",
-      aiHint: "person avatar"
-    },
-    {
-      quote: "সেবক (এআই চ্যাট) অনেক সহানুভূতি নিয়ে আমার প্রশ্নের উত্তর দিয়েছে। মনে হয়েছে কেউ সত্যিই পাশে আছে।",
-      name: "একজন কৃতজ্ঞ ব্যবহারকারী",
-      avatar: "https://placehold.co/100x100.png",
-      aiHint: "person avatar"
+  const [loadingTestimonial, setLoadingTestimonial] = React.useState(false);
+  const [testimonialError, setTestimonialError] = React.useState<string | null>(null);
+  const [imagePreview, setImagePreview] = React.useState<string | null>(null);
+  const [userTestimonials, setUserTestimonials] = React.useState<TestimonialEntry[]>([]);
+  const { toast } = useToast();
+
+  const {
+    register: registerTestimonial,
+    handleSubmit: handleSubmitTestimonial,
+    setValue: setValueTestimonial,
+    formState: { errors: testimonialFormErrors },
+    reset: resetTestimonialForm,
+  } = useForm<TestimonialFormValues>({
+    resolver: zodResolver(testimonialSchema),
+  });
+
+  React.useEffect(() => {
+    const storedTestimonialsString = localStorage.getItem('userTestimonials');
+    if (storedTestimonialsString) {
+      try {
+        const loadedTestimonials: TestimonialEntry[] = JSON.parse(storedTestimonialsString);
+        setUserTestimonials(loadedTestimonials.reverse()); // Show newest first
+      } catch (error) {
+        console.error("Failed to parse testimonials from local storage:", error);
+        setUserTestimonials([]);
+      }
     }
-  ];
+  }, []);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        toast({
+          title: "ফাইলের আকার বড়",
+          description: "অনুগ্রহ করে ২MB এর চেয়ে ছোট ছবি আপলোড করুন।",
+          variant: "destructive",
+        });
+        event.target.value = ''; // Clear the input
+        setImagePreview(null);
+        setValueTestimonial('image', undefined);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUri = reader.result as string;
+        setImagePreview(dataUri);
+        setValueTestimonial('image', dataUri); 
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+      setValueTestimonial('image', undefined);
+    }
+  };
+
+  const onTestimonialSubmit: SubmitHandler<TestimonialFormValues> = async (data) => {
+    setLoadingTestimonial(true);
+    setTestimonialError(null);
+
+    try {
+      const newTestimonial: TestimonialEntry = {
+        id: crypto.randomUUID(),
+        name: data.name,
+        quote: data.quote,
+        image: data.image,
+        aiHint: data.image ? "user uploaded avatar" : "person avatar"
+      };
+
+      const existingTestimonialsString = localStorage.getItem('userTestimonials');
+      const existingTestimonials: TestimonialEntry[] = existingTestimonialsString ? JSON.parse(existingTestimonialsString) : [];
+      
+      existingTestimonials.push(newTestimonial);
+      localStorage.setItem('userTestimonials', JSON.stringify(existingTestimonials));
+      setUserTestimonials(prev => [newTestimonial, ...prev]); // Add to current state and show newest first
+
+      toast({
+        title: "মতামত জমা হয়েছে",
+        description: `ধন্যবাদ, ${data.name}, আপনার মূল্যবান মতামতের জন্য।`,
+      });
+      resetTestimonialForm();
+      setImagePreview(null);
+    } catch (e) {
+      console.error(e);
+      const errorMessage = e instanceof Error ? e.message : 'একটি অজানা ত্রুটি ঘটেছে।';
+      setTestimonialError(`মতামত জমা দিতে ব্যর্থ: ${errorMessage}`);
+      toast({
+        title: "ত্রুটি",
+        description: `মতামত জমা দিতে ব্যর্থ: ${errorMessage}`,
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingTestimonial(false);
+    }
+  };
+
+  const testimonialsToDisplay = userTestimonials.length > 0 ? userTestimonials : defaultTestimonials;
 
   return (
     <div className="flex flex-col items-center">
@@ -193,28 +321,90 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section (Placeholder) */}
+      {/* Testimonials Section */}
       <section className="w-full py-12 md:py-24 lg:py-20 bg-secondary/30">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
             <Quote className="h-12 w-12 text-accent mb-2" />
             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">ব্যবহারকারীদের কথা</h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-lg">আমাদের ব্যবহারকারীরা কী বলছেন শুনুন (কাল্পনিক উদাহরণ):</p>
+            <p className="max-w-[900px] text-muted-foreground md:text-lg">আমাদের সম্পর্কে আপনার অভিজ্ঞতা জানান অথবা অন্যদের মতামত দেখুন।</p>
           </div>
-          <div className="grid gap-8 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="flex flex-col items-center text-center shadow-lg rounded-xl p-6 bg-card">
-                <Avatar className="h-20 w-20 mb-4 border-2 border-primary">
-                  <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.aiHint} />
-                  <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <CardContent className="p-0">
-                  <blockquote className="text-muted-foreground italic mb-4">"{testimonial.quote}"</blockquote>
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+
+          <Card className="max-w-2xl mx-auto mb-12 shadow-xl">
+            <CardHeader>
+              <CardTitle className="text-2xl font-headline text-center">আপনার মতামত দিন</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmitTestimonial(onTestimonialSubmit)} className="space-y-6">
+                <div>
+                  <Label htmlFor="testimonialName">আপনার নাম</Label>
+                  <Input id="testimonialName" {...registerTestimonial('name')} placeholder="আপনার সম্পূর্ণ নাম" />
+                  {testimonialFormErrors.name && <p className="text-destructive text-sm mt-1">{testimonialFormErrors.name.message}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="testimonialQuote">আপনার মতামত</Label>
+                  <Textarea id="testimonialQuote" {...registerTestimonial('quote')} rows={4} placeholder="অন্তিম যাত্রা সম্পর্কে আপনার অভিজ্ঞতা লিখুন..." />
+                  {testimonialFormErrors.quote && <p className="text-destructive text-sm mt-1">{testimonialFormErrors.quote.message}</p>}
+                </div>
+                <div>
+                  <Label htmlFor="testimonialImageFile">আপনার ছবি (ঐচ্ছিক, সর্বোচ্চ ২MB)</Label>
+                  <div className="flex items-center space-x-4">
+                    <Input 
+                      id="testimonialImageFile" 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={handleImageChange}
+                      className="block w-full text-sm text-slate-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-primary/10 file:text-primary
+                        hover:file:bg-primary/20"
+                    />
+                  </div>
+                  {imagePreview && (
+                    <div className="mt-4 relative w-24 h-24 rounded-full overflow-hidden border shadow-sm mx-auto">
+                      <Image src={imagePreview} alt="আপনার ছবির প্রিভিউ" layout="fill" objectFit="cover" data-ai-hint="user avatar preview"/>
+                    </div>
+                  )}
+                  {testimonialFormErrors.image && <p className="text-destructive text-sm mt-1">{testimonialFormErrors.image.message}</p>}
+                </div>
+                <Button type="submit" disabled={loadingTestimonial} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                  {loadingTestimonial ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
+                  মতামত জমা দিন
+                </Button>
+                {testimonialError && (
+                  <div className="mt-4 p-3 bg-destructive/10 border border-destructive/30 rounded-md text-destructive text-sm">
+                    <div className="flex items-center">
+                      <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <p>{testimonialError}</p>
+                    </div>
+                  </div>
+                )}
+              </form>
+            </CardContent>
+          </Card>
+          
+          <Separator className="my-12" />
+
+          {testimonialsToDisplay.length > 0 ? (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {testimonialsToDisplay.map((testimonial) => (
+                <Card key={testimonial.id} className="flex flex-col items-center text-center shadow-lg rounded-xl p-6 bg-card">
+                   <Avatar className="h-24 w-24 mb-4 border-2 border-primary">
+                    <AvatarImage src={testimonial.image || "https://placehold.co/100x100.png"} alt={testimonial.name} data-ai-hint={testimonial.aiHint || "person avatar"} />
+                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <CardContent className="p-0">
+                    <blockquote className="text-muted-foreground italic mb-4 text-sm">&quot;{testimonial.quote}&quot;</blockquote>
+                    <p className="font-semibold text-foreground text-base">{testimonial.name}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground">এখনও কোনো ব্যবহারকারী মতামত দেননি।</p>
+          )}
         </div>
       </section>
       
@@ -260,4 +450,6 @@ export default function Home() {
     </div>
   );
 }
+    
+
     
