@@ -33,23 +33,25 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // More robust way to set fallbacks
-      config.resolve.fallback = {
-        ...(config.resolve.fallback || {}), // Preserve existing fallbacks
-        async_hooks: false,
-        fs: false,
-        net: false,
-        tls: false,
-        child_process: false,
-        path: false,
-        os: false,
-        crypto: false,
-        stream: false,
-        http: false,
-        https: false,
-        zlib: false,
-        url: false,
-      };
+      // Ensure config.resolve exists
+      config.resolve = config.resolve || {};
+      // Ensure config.resolve.fallback exists
+      config.resolve.fallback = config.resolve.fallback || {};
+
+      // Set specific fallbacks to false
+      config.resolve.fallback.async_hooks = false;
+      config.resolve.fallback.fs = false;
+      config.resolve.fallback.net = false;
+      config.resolve.fallback.tls = false;
+      config.resolve.fallback.child_process = false;
+      config.resolve.fallback.path = false;
+      config.resolve.fallback.os = false;
+      config.resolve.fallback.crypto = false;
+      config.resolve.fallback.stream = false;
+      config.resolve.fallback.http = false;
+      config.resolve.fallback.https = false;
+      config.resolve.fallback.zlib = false;
+      config.resolve.fallback.url = false;
     }
     return config;
   },
