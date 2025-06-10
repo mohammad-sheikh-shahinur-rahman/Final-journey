@@ -8,18 +8,11 @@ import Link from "next/link";
 export default function Home() {
   const services = [
     {
-      title: "মৃত্যুর প্রতিবেদন করুন",
-      description: "প্রয়োজনীয় ব্যবস্থা শুরু করতে দ্রুত এবং সহজে অপরিহার্য বিবরণ জমা দিন।",
+      title: "মৃত্যুর প্রতিবেদন ও জানাজার সময়",
+      description: "অপরিহার্য বিবরণ জমা দিন এবং ইসলামিক ঐতিহ্য ও স্থানীয় সময়সূচীর উপর ভিত্তি করে জানাজার জন্য এআই-চালিত সময়ের প্রস্তাবনা পান।",
       icon: <FileText className="h-10 w-10 text-primary mb-4" />,
       link: "/report-death",
-      cta: "প্রতিবেদন জমা দিন"
-    },
-    {
-      title: "এআই জানাজার সময় প্রস্তাবনা",
-      description: "ইসলামিক ঐতিহ্য এবং স্থানীয় সময়সূচীর উপর ভিত্তি করে জানাজার নামাজের সময়ের জন্য এআই-চালিত প্রস্তাবনা পান।",
-      icon: <CalendarClock className="h-10 w-10 text-primary mb-4" />,
-      link: "/report-death", 
-      cta: "প্রস্তাবনা পান"
+      cta: "প্রতিবেদন করুন ও সময় জানুন"
     },
     {
       title: "এআই স্মরণিকা জেনারেটর",
@@ -147,3 +140,4 @@ export default function Home() {
     </div>
   );
 }
+    
