@@ -6,13 +6,13 @@ import { Toaster } from "@/components/ui/toaster";
 import MainLayout from '@/components/layout/main-layout';
 
 const alegreya = Alegreya({
-  subsets: ['latin', 'bengali'],
+  subsets: ['latin'], // Removed 'bengali'
   variable: '--font-alegreya',
   display: 'swap',
 });
 
 const ptSans = PT_Sans({
-  subsets: ['latin', 'bengali'],
+  subsets: ['latin'], // Removed 'bengali'
   weight: ['400', '700'],
   variable: '--font-pt-sans',
   display: 'swap',
@@ -32,9 +32,7 @@ export default function RootLayout({
   return (
     <html lang="bn" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+        {/* Removed manual Google Font links as next/font handles this */}
       </head>
       <body
         className={cn(
