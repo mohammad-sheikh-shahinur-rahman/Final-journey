@@ -11,7 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, AlertTriangle, Send, Copy, MessageCircle, Users, MessageCircleCode } from 'lucide-react';
-import { generateInvitation, type GenerateInvitationInput, type GenerateInvitationOutput, GenerateInvitationInputSchema } from '@/ai/flows/generate-invitation-flow';
+import { generateInvitation, type GenerateInvitationInput, type GenerateInvitationOutput } from '@/ai/flows/generate-invitation-flow';
+import { GenerateInvitationInputSchema } from '@/ai/schemas'; // Import schema from centralized location
 import { useToast } from "@/hooks/use-toast";
 
 const invitationSchema = GenerateInvitationInputSchema;

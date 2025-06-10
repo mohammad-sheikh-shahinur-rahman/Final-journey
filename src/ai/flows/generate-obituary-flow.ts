@@ -10,20 +10,9 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { GenerateObituaryInputSchema, GenerateObituaryOutputSchema } from '@/ai/schemas';
 
-const GenerateObituaryInputSchema = z.object({
-  deceasedName: z.string().describe('মৃত ব্যক্তির নাম।'),
-  dateOfBirth: z.string().optional().describe('জন্ম তারিখ (YYYY-MM-DD), ঐচ্ছিক।'),
-  dateOfDeath: z.string().describe('মৃত্যুর তারিখ (YYYY-MM-DD)।'),
-  significantEvents: z.string().describe('জীবনের উল্লেখযোগ্য ঘটনা ও অর্জনসমূহ।'),
-  personality: z.string().describe('ব্যক্তিত্বের প্রধান বৈশিষ্ট্যসমূহ।'),
-  survivedBy: z.string().describe('পরিবারে কে কে আছেন (যেমন: স্ত্রী, পুত্র, কন্যা)।'),
-});
 export type GenerateObituaryInput = z.infer<typeof GenerateObituaryInputSchema>;
-
-const GenerateObituaryOutputSchema = z.object({
-  obituaryText: z.string().describe('এআই দ্বারা তৈরি করা স্মরণিকার পাঠ্য।'),
-});
 export type GenerateObituaryOutput = z.infer<typeof GenerateObituaryOutputSchema>;
 
 export async function generateObituary(input: GenerateObituaryInput): Promise<GenerateObituaryOutput> {

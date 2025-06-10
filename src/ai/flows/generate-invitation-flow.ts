@@ -10,22 +10,9 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { GenerateInvitationInputSchema, GenerateInvitationOutputSchema } from '@/ai/schemas';
 
-export const GenerateInvitationInputSchema = z.object({
-  deceasedName: z.string().describe('মৃত ব্যক্তির নাম।'),
-  eventType: z.enum(['জানাজা', 'দাফন', 'দোয়া মাহফিল', 'কুলখানি', 'অন্যান্য']).describe('অনুষ্ঠানের প্রকার (যেমন: জানাজা, দোয়া মাহফিল)।'),
-  eventDateTime: z.string().describe('অনুষ্ঠানের তারিখ ও সময় (যেমন: ২৫শে ডিসেম্বর, ২০২৪, দুপুর ২:০০ ঘটিকায়)।'),
-  eventLocation: z.string().describe('অনুষ্ঠানের স্থান (যেমন: বায়তুল মোকাররম মসজিদ / মরহুমের নিজ বাসভবন)।'),
-  hostName: z.string().optional().describe('আমন্ত্রণকারী বা আয়োজকের নাম (ঐচ্ছিক, যেমন: শোকসন্তপ্ত পরিবারবর্গ)।'),
-  additionalMessage: z.string().optional().describe('কোনো অতিরিক্ত বার্তা বা বিশেষ অনুরোধ (ঐচ্ছিক)।'),
-});
 export type GenerateInvitationInput = z.infer<typeof GenerateInvitationInputSchema>;
-
-export const GenerateInvitationOutputSchema = z.object({
-  invitationText: z.string().describe('এআই দ্বারা তৈরি করা আমন্ত্রণ বার্তা (সাধারণত এসএমএস বা হোয়াটসঅ্যাপের জন্য উপযুক্ত)।'),
-  smsLink: z.string().describe('এসএমএস পাঠানোর জন্য একটি `sms:` স্কিমের লিঙ্ক।'),
-  whatsappLink: z.string().describe('হোয়াটসঅ্যাপে বার্তা পাঠানোর জন্য একটি `https://wa.me/` লিঙ্ক (ফোন নম্বর ছাড়া)।')
-});
 export type GenerateInvitationOutput = z.infer<typeof GenerateInvitationOutputSchema>;
 
 export async function generateInvitation(input: GenerateInvitationInput): Promise<GenerateInvitationOutput> {

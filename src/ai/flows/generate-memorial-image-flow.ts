@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview Generates memorial images using AI based on a given theme.
@@ -9,18 +10,9 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { MemorialImageInputSchema, MemorialImageOutputSchema } from '@/ai/schemas';
 
-export const MemorialImageInputSchema = z.object({
-  theme: z.string().describe('The theme for the memorial image, e.g., "Peaceful natural scenery", "Light of memory (like a candle or lantern)".'),
-  // Optional: Add deceasedName if you want to subtly incorporate it or guide the AI, but keep image respectful.
-  // deceasedName: z.string().optional().describe('The name of the deceased, to subtly guide the image if appropriate.'),
-});
 export type MemorialImageInput = z.infer<typeof MemorialImageInputSchema>;
-
-export const MemorialImageOutputSchema = z.object({
-  imageDataUri: z.string().describe("The generated image as a data URI. Expected format: 'data:image/png;base64,<encoded_data>'."),
-  revisedPrompt: z.string().optional().describe("The revised prompt used by the model, if available.")
-});
 export type MemorialImageOutput = z.infer<typeof MemorialImageOutputSchema>;
 
 export async function generateMemorialImage(input: MemorialImageInput): Promise<MemorialImageOutput> {

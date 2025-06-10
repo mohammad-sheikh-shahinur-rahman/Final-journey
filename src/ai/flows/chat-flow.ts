@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview একটি এআই চ্যাট সহকারী যা ব্যবহারকারীদের সাথে কথা বলতে পারে।
@@ -9,21 +10,9 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { ChatInputSchema, ChatOutputSchema } from '@/ai/schemas';
 
-const ChatMessageSchema = z.object({
-  role: z.enum(['user', 'model']).describe("কথোপকথনে বার্তা প্রেরকের ভূমিকা (ব্যবহারকারী বা মডেল)।"),
-  text: z.string().describe("বার্তার বিষয়বস্তু।")
-});
-
-const ChatInputSchema = z.object({
-  userInput: z.string().describe('ব্যবহারকারীর বর্তমান বার্তা।'),
-  history: z.array(ChatMessageSchema).optional().describe('পূর্ববর্তী কথোপকথনের ইতিহাস, যদি থাকে।'),
-});
 export type ChatInput = z.infer<typeof ChatInputSchema>;
-
-const ChatOutputSchema = z.object({
-  aiResponse: z.string().describe('এআই সহকারীর প্রতিক্রিয়া।'),
-});
 export type ChatOutput = z.infer<typeof ChatOutputSchema>;
 
 export async function getChatResponse(input: ChatInput): Promise<ChatOutput> {

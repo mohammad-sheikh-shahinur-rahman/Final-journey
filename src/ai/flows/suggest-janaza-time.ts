@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -10,34 +11,9 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { SuggestJanazaTimeInputSchema, SuggestJanazaTimeOutputSchema } from '@/ai/schemas';
 
-const SuggestJanazaTimeInputSchema = z.object({
-  timeOfDeath: z
-    .string()
-    .describe(
-      'The time of death, in ISO 8601 format (e.g., 2024-01-01T12:00:00+06:00). Must include the correct timezone.'
-    ),
-  localMasjidSchedule: z
-    .string()
-    .describe(
-      'The schedule of prayers at the local masjid, including Fajr, Dhuhr, Asr, Maghrib, and Isha. Provide as a string.'
-    ),
-  location: z.string().describe('The general location of the deceased.'),
-});
 export type SuggestJanazaTimeInput = z.infer<typeof SuggestJanazaTimeInputSchema>;
-
-const SuggestJanazaTimeOutputSchema = z.object({
-  suggestedTimes: z
-    .array(z.string())
-    .describe(
-      'An array of suggested Janaza times, in ISO 8601 format with timezone. Provide at least three options, with reasoning.'
-    ),
-  reasoning: z
-    .string()
-    .describe(
-      'The reasoning behind the suggested times, considering Islamic traditions, local masjid schedules, and daylight hours.'
-    ),
-});
 export type SuggestJanazaTimeOutput = z.infer<typeof SuggestJanazaTimeOutputSchema>;
 
 export async function suggestJanazaTime(input: SuggestJanazaTimeInput): Promise<SuggestJanazaTimeOutput> {
