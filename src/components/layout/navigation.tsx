@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -8,6 +9,7 @@ const navItems = [
   { href: '/', label: 'হোম' },
   { href: '/report-death', label: 'মৃত্যুর প্রতিবেদন' },
   { href: '/services', label: 'সেবাসমূহ' },
+  { href: '/generate-obituary', label: 'স্মরণিকা জেনারেটর' },
 ];
 
 export default function Navigation() {

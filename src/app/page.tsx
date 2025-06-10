@@ -1,6 +1,7 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather } from "lucide-react";
+import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,8 +18,15 @@ export default function Home() {
       title: "এআই জানাজার সময় প্রস্তাবনা",
       description: "ইসলামিক ঐতিহ্য এবং স্থানীয় সময়সূচীর উপর ভিত্তি করে জানাজার নামাজের সময়ের জন্য এআই-চালিত প্রস্তাবনা পান।",
       icon: <CalendarClock className="h-10 w-10 text-primary mb-4" />,
-      link: "/report-death",
+      link: "/report-death", // Assuming this form also triggers Janaza time suggestion.
       cta: "প্রস্তাবনা পান"
+    },
+    {
+      title: "এআই স্মরণিকা জেনারেটর",
+      description: "প্রিয়জনের জীবনের উল্লেখযোগ্য ঘটনা ও স্মৃতির উপর ভিত্তি করে একটি সহানুভূতিপূর্ণ স্মরণিকা তৈরি করুন।",
+      icon: <PenSquare className="h-10 w-10 text-primary mb-4" />,
+      link: "/generate-obituary",
+      cta: "স্মরণিকা তৈরি করুন"
     },
     {
       title: "পরিষেবা প্রদানকারী খুঁজুন",
@@ -63,19 +71,19 @@ export default function Home() {
             <Sparkles className="h-12 w-12 text-accent mb-2" />
             <h2 className="text-3xl font-headline font-bold tracking-tighter sm:text-4xl text-foreground">আমাদের সেবাসমূহ</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-lg lg:text-base xl:text-lg">
-              अंत्येष्टि ব্যবস্থার মধ্যে সহজে এবং মানসিক শান্তির সাথে আপনাকে সাহায্য করার জন্য আমরা বিভিন্ন পরিষেবা সরবরাহ করি।
+              অন্ত্যেষ্টিক্রিয়া ব্যবস্থার প্রতিটি ধাপে সহজে এবং মানসিক শান্তির সাথে আপনাকে সাহায্য করার জন্য আমরা বিভিন্ন পরিষেবা সরবরাহ করি।
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"> {/* Adjusted grid for potentially 5 items */}
             {services.map((service) => (
               <Card key={service.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
-                <CardHeader className="items-center text-center bg-card">
+                <CardHeader className="items-center text-center bg-card pt-6">
                   {service.icon}
                   <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex-grow text-center bg-card">
-                  <CardDescription className="text-muted-foreground mb-6">{service.description}</CardDescription>
-                  <Link href={service.link}>
+                <CardContent className="flex-grow text-center bg-card p-6 flex flex-col">
+                  <CardDescription className="text-muted-foreground mb-6 flex-grow">{service.description}</CardDescription>
+                  <Link href={service.link} className="mt-auto">
                     <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary/10">
                       {service.cta}
                     </Button>
@@ -115,7 +123,7 @@ export default function Home() {
           <Image
             src="https://placehold.co/600x400.png"
             alt="শান্তিপূর্ণ দৃশ্য"
-            data-ai-hint="serene landscape"
+            data-ai-hint="serene nature"
             width={600}
             height={400}
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
