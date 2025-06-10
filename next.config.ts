@@ -59,6 +59,7 @@ const nextConfig: NextConfig = {
       config.resolve.fallback.stream = false;
       config.resolve.fallback.http = false;
       config.resolve.fallback.https = false;
+      config.resolve.fallback.http2 = false; // Added http2
       config.resolve.fallback.zlib = false;
       config.resolve.fallback.url = false;
     }
