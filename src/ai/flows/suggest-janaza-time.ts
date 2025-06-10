@@ -10,7 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 import { SuggestJanazaTimeInputSchema, SuggestJanazaTimeOutputSchema } from '@/ai/schemas';
 
 export type SuggestJanazaTimeInput = z.infer<typeof SuggestJanazaTimeInputSchema>;
@@ -54,3 +54,4 @@ const suggestJanazaTimeFlow = ai.defineFlow(
     return output!;
   }
 );
+

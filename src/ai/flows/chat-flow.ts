@@ -5,11 +5,11 @@
  *
  * - getChatResponse - ব্যবহারকারীর বার্তার উপর ভিত্তি করে এআই এর প্রতিক্রিয়া প্রদান করে।
  * - ChatInput - getChatResponse ফাংশনের ইনপুট টাইপ।
- * - ChatOutput - getChatResponse ফাংশনের রিটার্ন টাইপ।
+ * - ChatOutput - getChatResponse ফাংশশনের রিটার্ন টাইপ।
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 import { ChatInputSchema, ChatOutputSchema } from '@/ai/schemas';
 
 export type ChatInput = z.infer<typeof ChatInputSchema>;
@@ -62,3 +62,4 @@ const chatFlow = ai.defineFlow(
     return output!;
   }
 );
+

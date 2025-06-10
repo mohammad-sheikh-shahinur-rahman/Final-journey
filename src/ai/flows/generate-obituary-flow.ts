@@ -9,7 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 import { GenerateObituaryInputSchema, GenerateObituaryOutputSchema } from '@/ai/schemas';
 
 export type GenerateObituaryInput = z.infer<typeof GenerateObituaryInputSchema>;
@@ -49,3 +49,4 @@ const generateObituaryFlow = ai.defineFlow(
     return output!;
   }
 );
+
