@@ -60,12 +60,16 @@ export default function DeveloperInfoPage() {
             </h3>
             <div className="space-y-3 flex flex-col items-center">
               {developer.websites.map((site) => (
-                <Link key={site.name} href={site.url} passHref legacyBehavior>
-                  <a target="_blank" rel="noopener noreferrer" className="w-full max-w-xs">
-                    <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent/10">
-                      {site.name}
-                    </Button>
-                  </a>
+                <Link 
+                  key={site.name} 
+                  href={site.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-full max-w-xs"
+                >
+                  <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent/10">
+                    {site.name}
+                  </Button>
                 </Link>
               ))}
             </div>
