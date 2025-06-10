@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare, MessageSquare } from "lucide-react";
+import { FileText, Users, CalendarClock, HeartHandshake, Sparkles, Feather, PenSquare, MessageSquare, FileSignature } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,6 +27,13 @@ export default function Home() {
       icon: <PenSquare className="h-10 w-10 text-primary mb-4" />,
       link: "/generate-obituary",
       cta: "স্মরণিকা তৈরি করুন"
+    },
+    {
+      title: "আগাম পরিকল্পনা করুন",
+      description: "আপনার অন্তিম ইচ্ছেগুলো নথিভুক্ত করে প্রিয়জনদের জন্য এই কঠিন সময়কে কিছুটা সহজ করুন।",
+      icon: <FileSignature className="h-10 w-10 text-primary mb-4" />,
+      link: "/plan-ahead",
+      cta: "পরিকল্পনা করুন"
     },
     {
       title: "এআই চ্যাট সহকারী",
